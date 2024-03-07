@@ -28,34 +28,35 @@ class PatientService {
 
  // Method to add a new patient
  static Future<bool> addPatient(Patient newPatient) async {
- final response = await http.post(
-    Uri.parse('$_baseUrl/Patients'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, dynamic>{
-      'name': newPatient.name,
-      'age': newPatient.age, // Assuming you have an age property in your Patient class
-      'address': newPatient.address, // Assuming you have an address property in your Patient class
-      'gender': newPatient.gender, // Assuming you have a gender property in your Patient class
-      'phno': newPatient.phno, // Assuming you have a phno property in your Patient class
-      'tests': newPatient.tests.map((test) => {
-        'bloodPressure': test.bloodPressure,
-        'heartRate': test.heartRate,
-        'respiratoryRate': test.respiratoryRate,
-        'oxygenSaturation': test.oxygenSaturation,
-        'bodyTemperature': test.bodyTemperature,
-      }).toList(),
-    }),
- );
+    final response = await http.post(
+      Uri.parse('$_baseUrl/Patients'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'name': newPatient.name,
+        'age': newPatient.age,
+        'address': newPatient.address,
+        'gender': newPatient.gender,
+        'phno': newPatient.phno,
+        'tests': newPatient.tests.map((test) => {
+          'bloodPressure': test.bloodPressure,
+          'heartRate': test.heartRate,
+          'respiratoryRate': test.respiratoryRate,
+          'oxygenSaturation': test.oxygenSaturation,
+          'bodyTemperature': test.bodyTemperature,
+        }).toList(),
+      }),
+    );
 
- if (response.statusCode == 200) {
-    // If the server returns a 200 OK response, then return true
-    return true;
- } else {
-    // If the server returns an error response, then return false
-    return false;
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      // If the server returns a 200 OK or 201 Created response, then return true
+      return true;
+    } else {
+      // If the server returns an error response, log the error and return false
+      print('Failed to add patient. Server responded with status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      return false;
+    }
  }
-}
-
 }
