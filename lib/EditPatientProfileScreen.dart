@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Test.dart';
 import 'patient.dart';
 
 class EditPatientProfileScreen extends StatefulWidget {
@@ -12,19 +13,36 @@ class EditPatientProfileScreen extends StatefulWidget {
 
 class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
  final _formKey = GlobalKey<FormState>();
+ late String _name;
+ late String _age;
+ late String _address;
+ late String _gender;
+ late String _phno;
  late String _bloodPressure;
+ late String _heartRate;
  late String _respiratoryRate;
- late String _bloodOxygenLevel;
- late String _heartbeatRate;
+ late String _oxygenSaturation;
+ late String _bodyTemperature;
 
  @override
  void initState() {
-    super.initState();
-    _bloodPressure = widget.patient.bloodPressure;
-    _respiratoryRate = widget.patient.respiratoryRate;
-    _bloodOxygenLevel = widget.patient.bloodOxygenLevel;
-    _heartbeatRate = widget.patient.heartbeatRate;
+ super.initState();
+ _name = widget.patient.name;
+ _age = widget.patient.age; // Assuming age is editable
+ _address = widget.patient.address; // Assuming address is editable
+ _gender = widget.patient.gender; // Assuming gender is editable
+ _phno = widget.patient.phno; // Assuming phno is editable
+ // Assuming the first test in the list is being edited
+ if (widget.patient.tests.isNotEmpty) {
+    Test firstTest = widget.patient.tests[0];
+    _bloodPressure = firstTest.bloodPressure;
+    _heartRate = firstTest.heartRate;
+    _respiratoryRate = firstTest.respiratoryRate;
+    _oxygenSaturation = firstTest.oxygenSaturation;
+    _bodyTemperature = firstTest.bodyTemperature;
  }
+}
+
 
  @override
  Widget build(BuildContext context) {
@@ -39,55 +57,73 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
           child: Column(
             children: <Widget>[
               TextFormField(
+                initialValue: _name,
+                decoration: InputDecoration(labelText: 'Name'),
+                onSaved: (value) {
+                 _name = value!;
+                },
+              ),
+              TextFormField(
+                initialValue: _age,
+                decoration: InputDecoration(labelText: 'Age'),
+                onSaved: (value) {
+                 _age = value!;
+                },
+              ),
+              TextFormField(
+                initialValue: _address,
+                decoration: InputDecoration(labelText: 'Address'),
+                onSaved: (value) {
+                 _address = value!;
+                },
+              ),
+              TextFormField(
+                initialValue: _gender,
+                decoration: InputDecoration(labelText: 'Gender'),
+                onSaved: (value) {
+                 _gender = value!;
+                },
+              ),
+              TextFormField(
+                initialValue: _phno,
+                decoration: InputDecoration(labelText: 'Phone Number'),
+                onSaved: (value) {
+                 _phno = value!;
+                },
+              ),
+              TextFormField(
                 initialValue: _bloodPressure,
                 decoration: InputDecoration(labelText: 'Blood Pressure (X/Y mmHg)'),
-                validator: (value) {
-                 if (value == null || value.isEmpty) {
-                    return 'Please enter the blood pressure';
-                 }
-                 return null;
-                },
                 onSaved: (value) {
                  _bloodPressure = value!;
                 },
               ),
               TextFormField(
+                initialValue: _heartRate,
+                decoration: InputDecoration(labelText: 'Heart Rate (X/min)'),
+                onSaved: (value) {
+                 _heartRate = value!;
+                },
+              ),
+              TextFormField(
                 initialValue: _respiratoryRate,
                 decoration: InputDecoration(labelText: 'Respiratory Rate (X/min)'),
-                validator: (value) {
-                 if (value == null || value.isEmpty) {
-                    return 'Please enter the respiratory rate';
-                 }
-                 return null;
-                },
                 onSaved: (value) {
                  _respiratoryRate = value!;
                 },
               ),
               TextFormField(
-                initialValue: _bloodOxygenLevel,
-                decoration: InputDecoration(labelText: 'Blood Oxygen Level (X%)'),
-                validator: (value) {
-                 if (value == null || value.isEmpty) {
-                    return 'Please enter the blood oxygen level';
-                 }
-                 return null;
-                },
+                initialValue: _oxygenSaturation,
+                decoration: InputDecoration(labelText: 'Oxygen Saturation (X%)'),
                 onSaved: (value) {
-                 _bloodOxygenLevel = value!;
+                 _oxygenSaturation = value!;
                 },
               ),
               TextFormField(
-                initialValue: _heartbeatRate,
-                decoration: InputDecoration(labelText: 'Heartbeat Rate (X/min)'),
-                validator: (value) {
-                 if (value == null || value.isEmpty) {
-                    return 'Please enter the heartbeat rate';
-                 }
-                 return null;
-                },
+                initialValue: _bodyTemperature,
+                decoration: InputDecoration(labelText: 'Body Temperature (X°C)'),
                 onSaved: (value) {
-                 _heartbeatRate = value!;
+                 _bodyTemperature = value!;
                 },
               ),
               ElevatedButton(
@@ -95,17 +131,23 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                  if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     // Create a new Patient object with the updated values
-                    Patient updatedPatient = Patient(
-                      name: widget.patient.name, // Assuming name is not editable
-                      dob: widget.patient.dob, // Assuming DOB is not editable
-                      time: widget.patient.time, // Assuming time is not editable
-                      bloodPressure: _bloodPressure,
-                      respiratoryRate: _respiratoryRate,
-                      bloodOxygen: widget.patient.bloodOxygen, // Assuming blood oxygen is not editable
-                      heartRate: widget.patient.heartRate, // Assuming heart rate is not editable
-                      heartbeatRate: _heartbeatRate,
-                      bloodOxygenLevel: _bloodOxygenLevel,
+                   Patient updatedPatient = Patient(
+                    name: _name,
+                    age: _age,
+                    address: _address,
+                    gender: _gender,
+                    phno: _phno,
+                    tests: [
+                        Test(
+                          bloodPressure: _bloodPressure,
+                          heartRate: _heartRate,
+                          respiratoryRate: _respiratoryRate,
+                          oxygenSaturation: _oxygenSaturation,
+                          bodyTemperature: _bodyTemperature,
+                        ),
+                    ],
                     );
+
                     // Pass the updated patient object back to the previous screen
                     Navigator.pop(context, updatedPatient);
                  }

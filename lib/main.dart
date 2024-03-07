@@ -95,8 +95,7 @@ class _MyLoginScreenState extends State<MyLoginScreen> {
                  },
                  child: Text('Log In'),
                  style: ElevatedButton.styleFrom(
-                    primary: Colors.blue, // Set background color to blue
-                    onPrimary: Colors.white, // Set text color to white
+                    foregroundColor: Colors.white, backgroundColor: Colors.blue, // Set text color to white
                  ),
                 ),
               ],

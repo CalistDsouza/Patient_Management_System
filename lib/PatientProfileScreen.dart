@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'Test.dart';
+import 'patient.dart';
 
 class PatientProfileScreen extends StatefulWidget {
  final String? patientId; // Make patientId optional
@@ -12,7 +14,7 @@ class PatientProfileScreen extends StatefulWidget {
 }
 
 class _PatientProfileScreenState extends State<PatientProfileScreen> {
- late Future<PatientInfo?> futurePatient;
+ late Future<Patient?> futurePatient;
 
  @override
  void initState() {
@@ -20,12 +22,12 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
     futurePatient = widget.patientId != null ? fetchPatientDetails() : Future.value(null);
  }
 
- Future<PatientInfo?> fetchPatientDetails() async {
+ Future<Patient?> fetchPatientDetails() async {
     if (widget.patientId == null) return null;
     final response = await http.get(Uri.parse('http://127.0.0.1:5000/Patients/${widget.patientId}'));
 
     if (response.statusCode == 200) {
-      return PatientInfo.fromJson(jsonDecode(response.body));
+      return Patient.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to load patient details');
     }
@@ -38,7 +40,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
         title: Text('Patient Profile'),
       ),
       body: Center(
-        child: FutureBuilder<PatientInfo?>(
+        child: FutureBuilder<Patient?>(
           future: futurePatient,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -48,6 +50,9 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
             } else if (snapshot.data == null) {
               return Text('No patient selected.');
             } else {
+              // Assuming you want to display the first test's results
+              Test? firstTest = snapshot.data!.tests.isNotEmpty ? snapshot.data!.tests.first : null;
+
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -64,60 +69,32 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                     'Medical History:',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                  ),
-                 Text(
-                    'Blood Pressure: ${snapshot.data!.bloodPressure}',
-                    style: TextStyle(fontSize: 16),
-                 ),
-                 Text(
-                    'Respiratory Rate: ${snapshot.data!.respiratoryRate}',
-                    style: TextStyle(fontSize: 16),
-                 ),
-                 Text(
-                    'Blood Oxygen Level: ${snapshot.data!.bloodOxygenLevel}',
-                    style: TextStyle(fontSize: 16),
-                 ),
-                 Text(
-                    'Heartbeat Rate: ${snapshot.data!.heartbeatRate}',
-                    style: TextStyle(fontSize: 16),
-                 ),
+                 if (firstTest != null)
+                    Text(
+                      'Blood Pressure: ${firstTest.bloodPressure}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                 if (firstTest != null)
+                    Text(
+                      'Respiratory Rate: ${firstTest.respiratoryRate}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                 if (firstTest != null)
+                    Text(
+                      'Oxygen Saturation: ${firstTest.oxygenSaturation}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                 if (firstTest != null)
+                    Text(
+                      'Heartbeat Rate: ${firstTest.heartRate}',
+                      style: TextStyle(fontSize: 16),
+                    ),
                 ],
               );
             }
           },
         ),
       ),
-    );
- }
-}
-
-class PatientInfo {
- final String name;
- final String age;
- final String gender;
- final String bloodPressure;
- final String respiratoryRate;
- final String bloodOxygenLevel;
- final String heartbeatRate;
-
- PatientInfo({
-    required this.name,
-    required this.age,
-    required this.gender,
-    required this.bloodPressure,
-    required this.respiratoryRate,
-    required this.bloodOxygenLevel,
-    required this.heartbeatRate,
- });
-
- factory PatientInfo.fromJson(Map<String, dynamic> json) {
-    return PatientInfo(
-      name: json['name'],
-      age: json['age'],
-      gender: json['gender'],
-      bloodPressure: json['bloodPressure'],
-      respiratoryRate: json['respiratoryRate'],
-      bloodOxygenLevel: json['bloodOxygenLevel'],
-      heartbeatRate: json['heartbeatRate'],
     );
  }
 }

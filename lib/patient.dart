@@ -1,37 +1,36 @@
+import 'Test.dart';
+
 class Patient {
+ final String? id;
  final String name;
- final String dob;
- final String time;
- final String bloodPressure;
- final String respiratoryRate;
- final String bloodOxygen;
- final String heartRate;
- final String heartbeatRate;
- final String bloodOxygenLevel;
+ final String age;
+ final String address;
+ final String gender;
+ final String phno;
+ final List<Test> tests;
 
  Patient({
+    this.id,
     required this.name,
-    required this.dob,
-    required this.time,
-    required this.bloodPressure,
-    required this.respiratoryRate,
-    required this.bloodOxygen,
-    required this.heartRate,
-    required this.heartbeatRate,
-    required this.bloodOxygenLevel,
+    required this.age,
+    required this.address,
+    required this.gender,
+    required this.phno,
+    required this.tests,
  });
 
  factory Patient.fromJson(Map<String, dynamic> json) {
+    var testsFromJson = json['tests'] as List? ?? [];
+    List<Test> testsList = testsFromJson.map((i) => Test.fromJson(i)).toList();
+
     return Patient(
-      name: json['name'],
-      dob: json['dob'],
-      time: json['time'],
-      bloodPressure: json['bloodPressure'],
-      respiratoryRate: json['respiratoryRate'],
-      bloodOxygen: json['bloodOxygen'],
-      heartRate: json['heartRate'],
-      heartbeatRate: json['heartbeatRate'],
-      bloodOxygenLevel: json['bloodOxygenLevel'],
+      id: json['_id'] as String?,
+      name: json['name'] as String? ?? 'N/A',
+      age: json['age'] as String? ?? 'N/A',
+      address: json['address'] as String? ?? 'N/A',
+      gender: json['gender'] as String? ?? 'N/A',
+      phno: json['phno'] as String? ?? 'N/A',
+      tests: testsList,
     );
  }
 }
