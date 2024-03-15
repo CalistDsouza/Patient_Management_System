@@ -96,6 +96,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
             return Center(child: Text('No patient selected.'));
           } else {
             Patient patient = snapshot.data!;
+            bool isCritical = patient.isCritical(); // Use the isCritical method from the Patient class
             return SingleChildScrollView(
               padding: EdgeInsets.all(16.0),
               child: Column(
@@ -155,6 +156,14 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                             ),
                           ],
                         ),
+                      ),
+                    ),
+                 if (isCritical)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Patient is in critical condition.',
+                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
                       ),
                     ),
                 ],
