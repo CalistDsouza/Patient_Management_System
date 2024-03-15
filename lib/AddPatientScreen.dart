@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
 // import 'dart:convert';
+import 'PatientStateManager.dart';
 import 'Test.dart';
 import 'patient_service.dart';
 import 'patient.dart';
@@ -117,50 +118,56 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
               Center(
                 child: ElevatedButton(
                  onPressed: () async {
-                    // Collect data from the controllers
-                    String name = nameController.text;
-                    String age = ageController.text;
-                    String address = addressController.text;
-                    String gender = genderController.text;
-                    String phno = phnoController.text;
-                    String bloodPressure = bpController.text;
-                    String respiratoryRate = rrController.text;
-                    String oxygenSaturation = o2Controller.text;
-                    String heartRate = hrController.text;
-                    String bodyTemperature = bolController.text;
+ // Collect data from the controllers
+ String name = nameController.text;
+ String age = ageController.text;
+ String address = addressController.text;
+ String gender = genderController.text;
+ String phno = phnoController.text;
+ String bloodPressure = bpController.text;
+ String respiratoryRate = rrController.text;
+ String oxygenSaturation = o2Controller.text;
+ String heartRate = hrController.text;
+ String bodyTemperature = bolController.text;
 
-                    // Create a Patient object with the collected data
-                    Patient newPatient = Patient(
-                      name: name,
-                      age: age,
-                      address: address,
-                      gender: gender,
-                      phno: phno,
-                      tests: [
-                        Test(
-                          bloodPressure: bloodPressure,
-                          heartRate: heartRate,
-                          respiratoryRate: respiratoryRate,
-                          oxygenSaturation: oxygenSaturation,
-                          bodyTemperature: bodyTemperature,
-                        ),
-                      ],
-                    );
+ // Create a Patient object with the collected data
+ Patient newPatient = Patient(
+    name: name,
+    age: age,
+    address: address,
+    gender: gender,
+    phno: phno,
+    tests: [
+      Test(
+        bloodPressure: bloodPressure,
+        heartRate: heartRate,
+        respiratoryRate: respiratoryRate,
+        oxygenSaturation: oxygenSaturation,
+        bodyTemperature: bodyTemperature,
+      ),
+    ],
+ );
 
-                    // Use the PatientService to add the new patient
-                    bool success = await PatientService.addPatient(newPatient);
-                    if (success) {
-                      // Show a success message or navigate back
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Patient added successfully')),
-                      );
-                    } else {
-                      // Show an error message
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Failed to add patient')),
-                      );
-                    }
-                 },
+ // Use the PatientService to add the new patient
+ bool success = await PatientService.addPatient(newPatient);
+ if (success) {
+    // Show a success message or navigate back
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Patient added successfully')),
+    );
+
+    // Update the patientListNotifier with the new patient
+    List<Patient> updatedList = List.from(PatientStateManager.patientListNotifier.value);
+    updatedList.add(newPatient);
+    PatientStateManager.patientListNotifier.value = updatedList;
+ } else {
+    // Show an error message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to add patient')),
+    );
+ }
+},
+
                  child: Text('Save'),
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'PatientStateManager.dart';
 import 'Test.dart';
 import 'patient.dart';
 
@@ -215,35 +216,45 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
   }
 
   Future<void> updatePatientOnServer(Patient updatedPatient) async {
-    try {
-      // Replace 'http://127.0.0.1:5000/Patients/${updatedPatient.id}' with your actual server URL
-      final response = await http.put(
-        Uri.parse('http://127.0.0.1:5000/Patients/${updatedPatient.id}'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(updatedPatient.toJson()),
+ try {
+    // Replace 'http://127.0.0.1:5000/Patients/${updatedPatient.id}' with your actual server URL
+    final response = await http.put(
+      Uri.parse('http://127.0.0.1:5000/Patients/${updatedPatient.id}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(updatedPatient.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      // If the server returns a 200 OK response, then the patient was updated successfully.
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Patient updated successfully')),
       );
 
-      if (response.statusCode == 200) {
-        // If the server returns a 200 OK response, then the patient was updated successfully.
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Patient updated successfully')),
-        );
-        // Optionally, navigate back to the previous screen or refresh the current screen
-      } else {
-        // If the server returns an error response, then something went wrong.
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(
-                  'Failed to update patient. Server responded with status code: ${response.statusCode}')),
-        );
+      // Update the patientListNotifier with the updated patient
+      List<Patient> updatedList = List.from(PatientStateManager.patientListNotifier.value);
+      int index = updatedList.indexWhere((patient) => patient.id == updatedPatient.id);
+      if (index != -1) {
+        updatedList[index] = updatedPatient; // Replace the old patient with the updated patient
+        PatientStateManager.patientListNotifier.value = updatedList;
       }
-    } catch (e) {
-      // Catch any exceptions and display an error message
+
+      // Optionally, navigate back to the previous screen or refresh the current screen
+    } else {
+      // If the server returns an error response, then something went wrong.
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update patient. Error: $e')),
+        SnackBar(
+            content: Text(
+                'Failed to update patient. Server responded with status code: ${response.statusCode}')),
       );
     }
-  }
+ } catch (e) {
+    // Catch any exceptions and display an error message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to update patient. Error: $e')),
+    );
+ }
+}
+
 }

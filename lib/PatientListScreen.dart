@@ -4,13 +4,13 @@ import 'AddPatientScreen.dart'; // Import the AddPatientScreen
 import 'PatientProfileScreen.dart'; // Import the PatientProfileScreen
 
 class PatientListScreen extends StatelessWidget {
- final PatientService _patientService = PatientService();
+  final PatientService _patientService = PatientService();
 
- @override
- Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Patients'),
+        title: const Text('Patients'),
       ),
       body: FutureBuilder<List<dynamic>>(
         future: _patientService.fetchPatients(),
@@ -21,16 +21,18 @@ class PatientListScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final patient = snapshot.data![index];
                 return ListTile(
-                 title: Text(patient['name']),
-                 subtitle: Text('Age: ${patient['age']}, Gender: ${patient['gender']}'),
-                 onTap: () {
+                  title: Text(patient['name']),
+                  subtitle: Text(
+                      'Age: ${patient['age']}, Gender: ${patient['gender']}'),
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PatientProfileScreen(patientId: patient['_id']),
+                        builder: (context) =>
+                            PatientProfileScreen(patientId: patient['_id']),
                       ),
                     );
-                 },
+                  },
                 );
               },
             );
@@ -39,7 +41,7 @@ class PatientListScreen extends StatelessWidget {
           }
 
           // By default, show a loading spinner.
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -49,30 +51,30 @@ class PatientListScreen extends StatelessWidget {
             MaterialPageRoute(builder: (context) => AddPatientScreen()),
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         backgroundColor: Colors.blue,
       ),
-      bottomNavigationBar: BottomAppBar(
+      bottomNavigationBar: const BottomAppBar(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: Align(
-                 alignment: Alignment.centerRight,
-                //  child: ElevatedButton(
-                //     onPressed: () {
-                //       // Navigate to the PatientProfileScreen without passing any data
-                //       Navigator.push(
-                //         context,
-                //         MaterialPageRoute(
-                //           builder: (context) => PatientProfileScreen(),
-                //         ),
-                //       );
-                //     },
-                //     child: Text('Next'),
-                //  ),
+                  alignment: Alignment.centerRight,
+                  //  child: ElevatedButton(
+                  //     onPressed: () {
+                  //       // Navigate to the PatientProfileScreen without passing any data
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => PatientProfileScreen(),
+                  //         ),
+                  //       );
+                  //     },
+                  //     child: Text('Next'),
+                  //  ),
                 ),
               ),
             ],
@@ -80,5 +82,5 @@ class PatientListScreen extends StatelessWidget {
         ),
       ),
     );
- }
+  }
 }
