@@ -42,68 +42,78 @@ class _MyLoginScreenState extends State<MyLoginScreen> {
     return null;
  }
 
- @override
- Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Login Screen')),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Email Input Field
-                TextFormField(
-                 controller: _emailController,
-                 decoration: InputDecoration(
-                    labelText: 'Username',
-                    border: OutlineInputBorder(),
-                 ),
-                 validator: _validateEmail,
+@override
+Widget build(BuildContext context) {
+ return Scaffold(
+    appBar: AppBar(title: Text('Login Screen')),
+    body: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Sign in to your account title
+              Text(
+                'Sign in to your account',
+                textAlign: TextAlign.center, // Center the text
+                style: TextStyle(
+                 fontSize: 24, // Adjust the font size as needed
+                 fontWeight: FontWeight.bold, // Make the text bold
                 ),
-                SizedBox(height: 8),
+              ),
+              SizedBox(height: 16), // Add some space between the title and the input fields
 
-                // Password Input Field
-                TextFormField(
-                 controller: _passwordController,
-                 obscureText: true,
-                 decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                 ),
-                 validator: _validatePassword,
+              // Email Input Field
+              TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                 labelText: 'Username',
+                 border: OutlineInputBorder(),
                 ),
-                SizedBox(height: 8),
+                validator: _validateEmail,
+              ),
+              SizedBox(height: 8),
 
-                // Log In Button
-                ElevatedButton(
-                 onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      // Check default credentials
-                      if (_emailController.text == "admin" && _passwordController.text == "password") {
-                        // Navigate to PatientListScreen
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => PatientListScreen()),
-                        );
-                      } else {
-                        // Show error message or implement additional login logic
-                      }
+              // Password Input Field
+              TextFormField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                 labelText: 'Password',
+                 border: OutlineInputBorder(),
+                ),
+                validator: _validatePassword,
+              ),
+              SizedBox(height: 8),
+
+              // Log In Button
+              ElevatedButton(
+                onPressed: () {
+                 if (_formKey.currentState?.validate() ?? false) {
+                    // Check default credentials
+                    if (_emailController.text == "admin" && _passwordController.text == "password") {
+                      // Navigate to PatientListScreen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PatientListScreen()),
+                      );
+                    } else {
+                      // Show error message or implement additional login logic
                     }
-                 },
-                 child: Text('Log In'),
-                 style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Colors.blue, // Set text color to white
-                 ),
+                 }
+                },
+                child: Text('Log In'),
+                style: ElevatedButton.styleFrom(
+                 foregroundColor: Colors.white, backgroundColor: Colors.blue, // Set text color to white
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
-    );
- }
+    ),
+ );
 }
-
+}

@@ -32,7 +32,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
       _fetchedPatient; // State variable to store the fetched Patient object
 
   Future<Patient> fetchPatientDetails() async {
-    // Replace 'http://127.0.0.1:5000/Patients/${widget.patientId}' with your actual server URL
+    
     final response = await http
         .get(Uri.parse('http://127.0.0.1:5000/Patients/${widget.patientId}'));
 
