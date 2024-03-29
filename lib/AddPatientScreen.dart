@@ -51,6 +51,9 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a name';
                     }
+                    if (value.contains(RegExp(r'\d'))) {
+                      return 'Name should not contain numbers';
+                    }
                     return null;
                   },
                 ),
@@ -64,8 +67,9 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter an age';
                     }
-                    if (int.tryParse(value!) == null) {
-                      return 'Please enter a valid number';
+                    int? age = int.tryParse(value!);
+                    if (age == null || age < 0 || age > 130) {
+                      return 'Please enter a valid age between 0 and 130';
                     }
                     return null;
                   },
@@ -92,7 +96,12 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a phone number';
                     }
-                    // Additional validation for phone number format can be added here
+                    if (!RegExp(r'^\d+$').hasMatch(value)) {
+                      return 'Phone number should only contain numbers';
+                    }
+                    if (value.length > 10) {
+                      return 'Phone number should not be more than 10 digits';
+                    }
                     return null;
                   },
                 ),
@@ -109,7 +118,10 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter blood pressure';
                           }
-                          // Additional validation for blood pressure can be added here
+                          double? bp = double.tryParse(value!);
+                          if (bp == null || bp < 60 || bp > 200) {
+                            return 'Please enter a valid blood pressure between 60 and 200 mmHg';
+                          }
                           return null;
                         },
                       ),
@@ -124,7 +136,10 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter respiratory rate';
                           }
-                          // Additional validation for respiratory rate can be added here
+                          int? rr = int.tryParse(value!);
+                          if (rr == null || rr < 10 || rr > 25) {
+                            return 'Please enter a valid respiratory rate between 10 and 25 breaths per minute';
+                          }
                           return null;
                         },
                       ),
@@ -143,7 +158,10 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter oxygen saturation';
                           }
-                          // Additional validation for oxygen saturation can be added here
+                          int? o2 = int.tryParse(value!);
+                          if (o2 == null || o2 < 90 || o2 > 100) {
+                            return 'Please enter a valid oxygen saturation between 90% and 100%';
+                          }
                           return null;
                         },
                       ),
@@ -157,7 +175,10 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter heart rate';
                           }
-                          // Additional validation for heart rate can be added here
+                          int? hr = int.tryParse(value!);
+                          if (hr == null || hr < 30 || hr > 200) {
+                            return 'Please enter a valid heart rate between 30 and 200 beats per minute';
+                          }
                           return null;
                         },
                       ),
@@ -278,5 +299,19 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    ageController.dispose();
+    addressController.dispose();
+    phnoController.dispose();
+    bpController.dispose();
+    rrController.dispose();
+    o2Controller.dispose();
+    hrController.dispose();
+    bolController.dispose();
+    super.dispose();
   }
 }

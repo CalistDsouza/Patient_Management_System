@@ -7,75 +7,19 @@ import 'patient.dart';
 import 'Test.dart';
 
 class PatientProfileScreen extends StatefulWidget {
-  final String? patientId;
+ final String? patientId;
 
-  PatientProfileScreen({Key? key, this.patientId}) : super(key: key);
+ PatientProfileScreen({Key? key, this.patientId}) : super(key: key);
 
-  @override
-  _PatientProfileScreenState createState() => _PatientProfileScreenState();
+ @override
+ _PatientProfileScreenState createState() => _PatientProfileScreenState();
 }
 
 class _PatientProfileScreenState extends State<PatientProfileScreen> {
-  late Patient? patient;
+ late Patient? patient;
 
-  @override
-  void initState() {
-    super.initState();
-    if (widget.patientId != null) {
-      try {
-        patient = Provider.of<Patients>(context, listen: false)
-            .patients
-            .firstWhere((p) => p.id == widget.patientId);
-      } catch (e) {
-        // Handle the error, e.g., by showing an error message
-        print("Error: No patient found with the given ID.");
-      }
-    }
-  }
-
-  Future<void> deletePatient() async {
- if (widget.patientId == null) return;
-
- // First, attempt to delete the patient from the backend
- final response = await http.delete(
-      Uri.parse('http://127.0.0.1:5000/Patients/${widget.patientId}'));
-
- if (response.statusCode == 200) {
-    // If the backend deletion is successful, remove the patient from the local model
-    Provider.of<Patients>(context, listen: false)
-        .removePatient(widget.patientId!);
-
-    // Show a success message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Patient deleted successfully')),
-    );
-
-    // Optionally, navigate back to the previous screen or refresh the current screen
-    Navigator.pop(context);
- } else {
-    // If the backend deletion fails, show an error message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Failed to delete patient')),
-    );
- }
-}
-
-
-  Future<void> editPatient() async {
-    if (widget.patientId == null) return;
-    // Navigate to the edit screen, passing the patient's details
-    // Ensure you have an EditPatientProfileScreen ready for this navigation
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            EditPatientProfileScreen(patientId: widget.patientId!),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
+ @override
+ Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Patient Profile'),
@@ -96,34 +40,42 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
           ),
         ],
       ),
-      body: patient == null
-          ? Center(child: Text('No patient selected.'))
-          : SingleChildScrollView(
+      body: FutureBuilder<Patient?>(
+        future: _loadPatient(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error loading patient data.'));
+          } else if (snapshot.hasData) {
+            patient = snapshot.data;
+            // Your existing UI code here, using `patient`
+            return SingleChildScrollView(
               padding: EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
+                 Center(
                     child: CircleAvatar(
                       radius: 60.0,
                       backgroundImage: AssetImage('assets/place_holder.png'),
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
+                 ),
+                 SizedBox(height: 20),
+                 Text(
                     '${patient!.name}',
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
+                 ),
+                 Text(
                     'Age: ${patient!.age}, Gender: ${patient!.gender}',
                     style: TextStyle(fontSize: 18),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
+                 ),
+                 SizedBox(height: 20),
+                 Text(
                     'Medical History:',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  for (var test in patient!.tests)
+                 ),
+                 for (var test in patient!.tests)
                     Card(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       child: Padding(
@@ -134,41 +86,41 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                             Text(
                               'Blood Pressure: ${test.bloodPressure}',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                                 fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                                 height: 8), // Add space between text elements
                             Text(
                               'Heart Rate: ${test.heartRate}',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                                 fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                                 height: 8), // Add space between text elements
                             Text(
                               'Respiratory Rate: ${test.respiratoryRate}',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                                 fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                                 height: 8), // Add space between text elements
                             Text(
                               'Oxygen Saturation: ${test.oxygenSaturation}',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                                 fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                                 height: 8), // Add space between text elements
                             Text(
                               'Body Temperature: ${test.bodyTemperature}',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                                 fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
                       ),
                     ),
-                  if (patient!.isCritical())
+                 if (patient!.isCritical())
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
@@ -179,7 +131,67 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                     ),
                 ],
               ),
-            ),
+            );
+          } else {
+            return Center(child: Text('No patient selected.'));
+          }
+        },
+      ),
     );
-  }
+ }
+
+ Future<Patient?> _loadPatient() async {
+    if (widget.patientId != null) {
+      try {
+        return Provider.of<Patients>(context, listen: false)
+            .patients
+            .firstWhere((p) => p.id == widget.patientId);
+      } catch (e) {
+        print("Error loading patient: $e");
+        // print("Error: No patient found with the given ID.");
+        return null;
+      }
+    }
+    return null;
+ }
+
+ Future<void> deletePatient() async {
+    if (widget.patientId == null) return;
+
+    // First, attempt to delete the patient from the backend
+    final response = await http.delete(
+        Uri.parse('http://127.0.0.1:5000/Patients/${widget.patientId}'));
+
+    if (response.statusCode == 200) {
+      // If the backend deletion is successful, remove the patient from the local model
+      Provider.of<Patients>(context, listen: false)
+          .removePatient(widget.patientId!);
+
+      // Show a success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Patient deleted successfully')),
+      );
+
+      // Optionally, navigate back to the previous screen or refresh the current screen
+      Navigator.pop(context);
+    } else {
+      // If the backend deletion fails, show an error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete patient')),
+      );
+    }
+ }
+
+ Future<void> editPatient() async {
+    if (widget.patientId == null) return;
+    // Navigate to the edit screen, passing the patient's details
+    // Ensure you have an EditPatientProfileScreen ready for this navigation
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            EditPatientProfileScreen(patientId: widget.patientId!),
+      ),
+    );
+ }
 }

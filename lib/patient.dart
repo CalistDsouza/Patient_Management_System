@@ -59,7 +59,7 @@ class Patient {
 
     return bloodPressure < 70 ||
            bloodPressure > 120 ||
-           heartRate < 40 ||
+           heartRate < 60 ||
            heartRate > 100 ||
            respiratoryRate < 12 ||
            respiratoryRate > 20 ||

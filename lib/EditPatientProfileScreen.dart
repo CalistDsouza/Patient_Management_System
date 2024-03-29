@@ -7,32 +7,33 @@ import 'patient.dart';
 import 'patients.dart'; // Ensure this import is correct
 
 class EditPatientProfileScreen extends StatefulWidget {
- final String patientId;
+  final String patientId;
 
- EditPatientProfileScreen({Key? key, required this.patientId})
+  EditPatientProfileScreen({Key? key, required this.patientId})
       : super(key: key);
 
- @override
- _EditPatientProfileScreenState createState() =>
+  @override
+  _EditPatientProfileScreenState createState() =>
       _EditPatientProfileScreenState();
 }
 
 class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
- final _formKey = GlobalKey<FormState>();
- late String _name;
- late String _age;
- late String _address;
- late String _gender;
- late String _phno;
- late String _bloodPressure;
- late String _heartRate;
- late String _respiratoryRate;
- late String _oxygenSaturation;
- late String _bodyTemperature;
- late Patient _fetchedPatient;
+  final _formKey = GlobalKey<FormState>();
+  late String _name;
+  late String _age;
+  late String _address;
+  late String _gender;
+  late String _phno;
+  late String _bloodPressure;
+  late String _heartRate;
+  late String _respiratoryRate;
+  late String _oxygenSaturation;
+  late String _bodyTemperature;
+  late Patient _fetchedPatient;
 
- Future<Patient> fetchPatientDetails() async {
-    final response = await http.get(Uri.parse('http://127.0.0.1:5000/Patients/${widget.patientId}'));
+  Future<Patient> fetchPatientDetails() async {
+    final response = await http
+        .get(Uri.parse('http://127.0.0.1:5000/Patients/${widget.patientId}'));
 
     if (response.statusCode == 200) {
       _fetchedPatient = Patient.fromJson(jsonDecode(response.body));
@@ -40,10 +41,10 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
     } else {
       throw Exception('Failed to load patient details');
     }
- }
+  }
 
- @override
- Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Patient Profile'),
@@ -62,98 +63,199 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
             _address = _fetchedPatient.address;
             _gender = _fetchedPatient.gender;
             _phno = _fetchedPatient.phno;
-            _bloodPressure = _fetchedPatient.tests.isNotEmpty ? _fetchedPatient.tests[0].bloodPressure : '';
-            _heartRate = _fetchedPatient.tests.isNotEmpty ? _fetchedPatient.tests[0].heartRate : '';
-            _respiratoryRate = _fetchedPatient.tests.isNotEmpty ? _fetchedPatient.tests[0].respiratoryRate : '';
-            _oxygenSaturation = _fetchedPatient.tests.isNotEmpty ? _fetchedPatient.tests[0].oxygenSaturation : '';
-            _bodyTemperature = _fetchedPatient.tests.isNotEmpty ? _fetchedPatient.tests[0].bodyTemperature : '';
+            _bloodPressure = _fetchedPatient.tests.isNotEmpty
+                ? _fetchedPatient.tests[0].bloodPressure
+                : '';
+            _heartRate = _fetchedPatient.tests.isNotEmpty
+                ? _fetchedPatient.tests[0].heartRate
+                : '';
+            _respiratoryRate = _fetchedPatient.tests.isNotEmpty
+                ? _fetchedPatient.tests[0].respiratoryRate
+                : '';
+            _oxygenSaturation = _fetchedPatient.tests.isNotEmpty
+                ? _fetchedPatient.tests[0].oxygenSaturation
+                : '';
+            _bodyTemperature = _fetchedPatient.tests.isNotEmpty
+                ? _fetchedPatient.tests[0].bodyTemperature
+                : '';
 
-            return Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                 children: <Widget>[
-                    TextFormField(
-                      initialValue: _name,
-                      decoration: InputDecoration(labelText: 'Name'),
-                      onSaved: (value) {
-                        _name = value!;
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: _age,
-                      decoration: InputDecoration(labelText: 'Age'),
-                      onSaved: (value) {
-                        _age = value!;
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: _address,
-                      decoration: InputDecoration(labelText: 'Address'),
-                      onSaved: (value) {
-                        _address = value!;
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: _gender,
-                      decoration: InputDecoration(labelText: 'Gender'),
-                      onSaved: (value) {
-                        _gender = value!;
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: _phno,
-                      decoration: InputDecoration(labelText: 'Phone Number'),
-                      onSaved: (value) {
-                        _phno = value!;
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: _bloodPressure,
-                      decoration: InputDecoration(labelText: 'Blood Pressure'),
-                      onSaved: (value) {
-                        _bloodPressure = value!;
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: _heartRate,
-                      decoration: InputDecoration(labelText: 'Heart Rate'),
-                      onSaved: (value) {
-                        _heartRate = value!;
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: _respiratoryRate,
-                      decoration: InputDecoration(labelText: 'Respiratory Rate'),
-                      onSaved: (value) {
-                        _respiratoryRate = value!;
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: _oxygenSaturation,
-                      decoration: InputDecoration(labelText: 'Oxygen Saturation'),
-                      onSaved: (value) {
-                        _oxygenSaturation = value!;
-                      },
-                    ),
-                    TextFormField(
-                      initialValue: _bodyTemperature,
-                      decoration: InputDecoration(labelText: 'Body Temperature'),
-                      onSaved: (value) {
-                        _bodyTemperature = value!;
-                      },
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          savePatientDetails();
-                        }
-                      },
-                      child: Text('Save'),
-                    ),
-                 ],
+            return SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        initialValue: _name,
+                        decoration: InputDecoration(labelText: 'Name'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a name';
+                          }
+                          if (value.contains(RegExp(r'\d'))) {
+                            return 'Name should not contain numbers';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _name = value!;
+                        },
+                      ),
+                      TextFormField(
+                        initialValue: _age,
+                        decoration: InputDecoration(labelText: 'Age'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter an age';
+                          }
+                          int? age = int.tryParse(value!);
+                          if (age == null || age < 0 || age > 130) {
+                            return 'Please enter a valid age between 0 and 130';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _age = value!;
+                        },
+                      ),
+                      TextFormField(
+                        initialValue: _address,
+                        decoration: InputDecoration(labelText: 'Address'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter an address';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _address = value!;
+                        },
+                      ),
+                      TextFormField(
+                        initialValue: _gender,
+                        decoration: InputDecoration(labelText: 'Gender'),
+                        onSaved: (value) {
+                          _gender = value!;
+                        },
+                      ),
+
+                      TextFormField(
+                        initialValue: _phno,
+                        decoration: InputDecoration(labelText: 'Phone Number'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a phone number';
+                          }
+                          if (!RegExp(r'^\d+$').hasMatch(value)) {
+                            return 'Phone number should only contain numbers';
+                          }
+                          if (value.length > 10) {
+                            return 'Phone number should not be more than 10 digits';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _phno = value!;
+                        },
+                      ),
+                      TextFormField(
+                        initialValue: _bloodPressure,
+                        decoration:
+                            InputDecoration(labelText: 'Blood Pressure'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter blood pressure';
+                          }
+                          double? bp = double.tryParse(value!);
+                          if (bp == null || bp < 60 || bp > 200) {
+                            return 'Please enter a valid blood pressure between 60 and 200 mmHg';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _bloodPressure = value!;
+                        },
+                      ),
+                      TextFormField(
+                        initialValue: _heartRate,
+                        decoration: InputDecoration(labelText: 'Heart Rate'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter heart rate';
+                          }
+                          int? hr = int.tryParse(value!);
+                          if (hr == null || hr < 30 || hr > 200) {
+                            return 'Please enter a valid heart rate between 30 and 200 beats per minute';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _heartRate = value!;
+                        },
+                      ),
+                      TextFormField(
+                        initialValue: _respiratoryRate,
+                        decoration:
+                            InputDecoration(labelText: 'Respiratory Rate'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter respiratory rate';
+                          }
+                          int? rr = int.tryParse(value!);
+                          if (rr == null || rr < 10 || rr > 25) {
+                            return 'Please enter a valid respiratory rate between 10 and 25 breaths per minute';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _respiratoryRate = value!;
+                        },
+                      ),
+                      TextFormField(
+                        initialValue: _oxygenSaturation,
+                        decoration:
+                            InputDecoration(labelText: 'Oxygen Saturation'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter oxygen saturation';
+                          }
+                          int? o2 = int.tryParse(value!);
+                          if (o2 == null || o2 < 90 || o2 > 100) {
+                            return 'Please enter a valid oxygen saturation between 90% and 100%';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _oxygenSaturation = value!;
+                        },
+                      ),
+                      TextFormField(
+                        initialValue: _bodyTemperature,
+                        decoration:
+                            InputDecoration(labelText: 'Body Temperature'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter body temperature';
+                          }
+                          // Additional validation for body temperature can be added here
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _bodyTemperature = value!;
+                        },
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            savePatientDetails();
+                          }
+                        },
+                        child: Text('Save'),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -161,9 +263,9 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
         },
       ),
     );
- }
+  }
 
- Future<void> savePatientDetails() async {
+  Future<void> savePatientDetails() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
@@ -190,9 +292,9 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
       // Send the updated Patient object to the server
       await updatePatientOnServer(updatedPatient);
     }
- }
+  }
 
- Future<void> updatePatientOnServer(Patient updatedPatient) async {
+  Future<void> updatePatientOnServer(Patient updatedPatient) async {
     try {
       final response = await http.put(
         Uri.parse('http://127.0.0.1:5000/Patients/${updatedPatient.id}'),
@@ -208,16 +310,18 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
         );
 
         // Update the local list of patients with the updated patient details
-        Provider.of<Patients>(context, listen: false).updatePatient(updatedPatient);
+        Provider.of<Patients>(context, listen: false)
+            .updatePatient(updatedPatient);
 
         // Optionally, navigate back to the previous screen or refresh the current screen
-        Navigator.pop(context); // This will navigate back to the previous screen
+        Navigator.pop(
+            context); // This will navigate back to the previous screen
         Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content: Text(
-                 'Failed to update patient. Server responded with status code: ${response.statusCode}')),
+                  'Failed to update patient. Server responded with status code: ${response.statusCode}')),
         );
       }
     } catch (e) {
@@ -225,5 +329,5 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
         SnackBar(content: Text('Failed to update patient. Error: $e')),
       );
     }
-}
+  }
 }
