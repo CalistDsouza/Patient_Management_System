@@ -1,12 +1,14 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, file_names
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'PatientStateManager.dart';
 import 'Test.dart';
-import 'patient_service.dart';
 import 'patient.dart';
 import 'patients.dart';
 
 class AddPatientScreen extends StatefulWidget {
+  const AddPatientScreen({super.key});
+
   @override
   _AddPatientScreenState createState() => _AddPatientScreenState();
 }
@@ -32,7 +34,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Patient Data'),
+        title: const Text('Patient Data'),
         centerTitle: true,
       ),
       body: Padding(
@@ -43,10 +45,11 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Name'),
+                const Text('Name'),
                 TextFormField(
                   controller: nameController,
-                  decoration: InputDecoration(hintText: 'Enter patient name'),
+                  decoration:
+                      const InputDecoration(hintText: 'Enter patient name'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a name';
@@ -57,28 +60,28 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
-                Text('Age'),
+                const SizedBox(height: 16),
+                const Text('Age'),
                 TextFormField(
                   controller: ageController,
-                  decoration: InputDecoration(hintText: 'Enter age'),
+                  decoration: const InputDecoration(hintText: 'Enter age'),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter an age';
                     }
-                    int? age = int.tryParse(value!);
+                    int? age = int.tryParse(value);
                     if (age == null || age < 0 || age > 130) {
                       return 'Please enter a valid age between 0 and 130';
                     }
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
-                Text('Address'),
+                const SizedBox(height: 16),
+                const Text('Address'),
                 TextFormField(
                   controller: addressController,
-                  decoration: InputDecoration(hintText: 'Enter address'),
+                  decoration: const InputDecoration(hintText: 'Enter address'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter an address';
@@ -86,11 +89,12 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
-                Text('Phone Number'),
+                const SizedBox(height: 16),
+                const Text('Phone Number'),
                 TextFormField(
                   controller: phnoController,
-                  decoration: InputDecoration(hintText: 'Enter phone number'),
+                  decoration:
+                      const InputDecoration(hintText: 'Enter phone number'),
                   keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -105,20 +109,21 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 24),
-                Text('Clinical Data'),
-                SizedBox(height: 8),
+                const SizedBox(height: 24),
+                const Text('Clinical Data'),
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     Expanded(
                       child: TextFormField(
                         controller: bpController,
-                        decoration: InputDecoration(hintText: 'Blood Pressure'),
+                        decoration:
+                            const InputDecoration(hintText: 'Blood Pressure'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter blood pressure';
                           }
-                          double? bp = double.tryParse(value!);
+                          double? bp = double.tryParse(value);
                           if (bp == null || bp < 60 || bp > 200) {
                             return 'Please enter a valid blood pressure between 60 and 200 mmHg';
                           }
@@ -126,17 +131,17 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                         },
                       ),
                     ),
-                    SizedBox(width: 16),
+                    const SizedBox(width: 16),
                     Expanded(
                       child: TextFormField(
                         controller: rrController,
                         decoration:
-                            InputDecoration(hintText: 'Respiratory Rate'),
+                            const InputDecoration(hintText: 'Respiratory Rate'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter respiratory rate';
                           }
-                          int? rr = int.tryParse(value!);
+                          int? rr = int.tryParse(value);
                           if (rr == null || rr < 10 || rr > 25) {
                             return 'Please enter a valid respiratory rate between 10 and 25 breaths per minute';
                           }
@@ -146,19 +151,19 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Row(
                   children: [
                     Expanded(
                       child: TextFormField(
                         controller: o2Controller,
-                        decoration:
-                            InputDecoration(hintText: 'Oxygen Saturation'),
+                        decoration: const InputDecoration(
+                            hintText: 'Oxygen Saturation'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter oxygen saturation';
                           }
-                          int? o2 = int.tryParse(value!);
+                          int? o2 = int.tryParse(value);
                           if (o2 == null || o2 < 90 || o2 > 100) {
                             return 'Please enter a valid oxygen saturation between 90% and 100%';
                           }
@@ -166,16 +171,17 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                         },
                       ),
                     ),
-                    SizedBox(width: 16),
+                    const SizedBox(width: 16),
                     Expanded(
                       child: TextFormField(
                         controller: hrController,
-                        decoration: InputDecoration(hintText: 'Heart Rate'),
+                        decoration:
+                            const InputDecoration(hintText: 'Heart Rate'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter heart rate';
                           }
-                          int? hr = int.tryParse(value!);
+                          int? hr = int.tryParse(value);
                           if (hr == null || hr < 30 || hr > 200) {
                             return 'Please enter a valid heart rate between 30 and 200 beats per minute';
                           }
@@ -185,14 +191,14 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Row(
                   children: [
                     Expanded(
                       child: TextFormField(
                         controller: bolController,
                         decoration:
-                            InputDecoration(hintText: 'Body Temperature'),
+                            const InputDecoration(hintText: 'Body Temperature'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter body temperature';
@@ -204,13 +210,13 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 32),
-                Text('Gender'),
+                const SizedBox(height: 32),
+                const Text('Gender'),
                 Row(
                   children: <Widget>[
                     Expanded(
                       child: RadioListTile<String>(
-                        title: Text('Male'),
+                        title: const Text('Male'),
                         value: 'Male',
                         groupValue: selectedGender,
                         onChanged: (String? value) {
@@ -222,7 +228,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     ),
                     Expanded(
                       child: RadioListTile<String>(
-                        title: Text('Female'),
+                        title: const Text('Female'),
                         value: 'Female',
                         groupValue: selectedGender,
                         onChanged: (String? value) {
@@ -234,7 +240,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 32),
+                const SizedBox(height: 32),
                 Center(
                   child: ElevatedButton(
                     onPressed: () async {
@@ -276,7 +282,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                         if (success) {
                           // Show a success message
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                                 content: Text('Patient added successfully')),
                           );
 
@@ -285,12 +291,13 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                         } else {
                           // Show an error message if the patient was not added successfully
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Failed to add patient')),
+                            const SnackBar(
+                                content: Text('Failed to add patient')),
                           );
                         }
                       }
                     },
-                    child: Text('Save'),
+                    child: const Text('Save'),
                   ),
                 ),
               ],

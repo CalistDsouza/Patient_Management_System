@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'patients.dart'; // Import the Patients model
@@ -6,19 +8,19 @@ import 'PatientProfileScreen.dart';
 import 'patient.dart';
 
 class PatientListScreen extends StatefulWidget {
- @override
- _PatientListScreenState createState() => _PatientListScreenState();
+  @override
+  _PatientListScreenState createState() => _PatientListScreenState();
 }
 
 class _PatientListScreenState extends State<PatientListScreen> {
- @override
- void initState() {
+  @override
+  void initState() {
     super.initState();
     Provider.of<Patients>(context, listen: false).fetchPatients();
- }
+  }
 
- @override
- Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Patients'),
@@ -26,7 +28,8 @@ class _PatientListScreenState extends State<PatientListScreen> {
       body: Consumer<Patients>(
         builder: (context, patients, child) {
           if (patients.patients.isEmpty) {
-            return Center(child: CircularProgressIndicator()); // Loading indicator
+            return Center(
+                child: CircularProgressIndicator()); // Loading indicator
           }
 
           // Separate patients into critical and non-critical lists
@@ -43,12 +46,18 @@ class _PatientListScreenState extends State<PatientListScreen> {
           // Combine the lists with headings
           List<Widget> patientWidgets = [];
           if (criticalPatients.isNotEmpty) {
-            patientWidgets.add(Text('Critical Patients', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)));
-            patientWidgets.addAll(criticalPatients.map((patient) => _buildPatientTile(context, patient)).toList());
+            patientWidgets.add(Text('Critical Patients',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)));
+            patientWidgets.addAll(criticalPatients
+                .map((patient) => _buildPatientTile(context, patient))
+                .toList());
           }
           if (nonCriticalPatients.isNotEmpty) {
-            patientWidgets.add(Text('Non-Critical Patients', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)));
-            patientWidgets.addAll(nonCriticalPatients.map((patient) => _buildPatientTile(context, patient)).toList());
+            patientWidgets.add(Text('Non-Critical Patients',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)));
+            patientWidgets.addAll(nonCriticalPatients
+                .map((patient) => _buildPatientTile(context, patient))
+                .toList());
           }
 
           return ListView.builder(
@@ -70,10 +79,10 @@ class _PatientListScreenState extends State<PatientListScreen> {
         backgroundColor: Colors.blue,
       ),
     );
- }
+  }
 
- // Helper function to build a ListTile for a patient
- Widget _buildPatientTile(BuildContext context, Patient patient) {
+  // Helper function to build a ListTile for a patient
+  Widget _buildPatientTile(BuildContext context, Patient patient) {
     return ListTile(
       title: Text(patient.name),
       subtitle: Text('Age: ${patient.age}, Gender: ${patient.gender}'),
@@ -86,5 +95,5 @@ class _PatientListScreenState extends State<PatientListScreen> {
         );
       },
     );
- }
+  }
 }
