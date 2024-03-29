@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, file_names
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -9,7 +11,7 @@ import 'patients.dart'; // Ensure this import is correct
 class EditPatientProfileScreen extends StatefulWidget {
   final String patientId;
 
-  EditPatientProfileScreen({Key? key, required this.patientId})
+  const EditPatientProfileScreen({Key? key, required this.patientId})
       : super(key: key);
 
   @override
@@ -47,13 +49,13 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Patient Profile'),
+        title: const Text('Edit Patient Profile'),
       ),
       body: FutureBuilder<Patient>(
         future: fetchPatientDetails(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
@@ -88,7 +90,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                     children: <Widget>[
                       TextFormField(
                         initialValue: _name,
-                        decoration: InputDecoration(labelText: 'Name'),
+                        decoration: const InputDecoration(labelText: 'Name'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a name';
@@ -104,12 +106,12 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                       ),
                       TextFormField(
                         initialValue: _age,
-                        decoration: InputDecoration(labelText: 'Age'),
+                        decoration: const InputDecoration(labelText: 'Age'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter an age';
                           }
-                          int? age = int.tryParse(value!);
+                          int? age = int.tryParse(value);
                           if (age == null || age < 0 || age > 130) {
                             return 'Please enter a valid age between 0 and 130';
                           }
@@ -121,7 +123,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                       ),
                       TextFormField(
                         initialValue: _address,
-                        decoration: InputDecoration(labelText: 'Address'),
+                        decoration: const InputDecoration(labelText: 'Address'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter an address';
@@ -134,15 +136,22 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                       ),
                       TextFormField(
                         initialValue: _gender,
-                        decoration: InputDecoration(labelText: 'Gender'),
+                        decoration: const InputDecoration(labelText: 'Gender'),
+                        validator: (value) {
+                          if (value == null ||
+                              (value != "Male" && value != "Female")) {
+                            return 'Gender should be either Male or Female';
+                          }
+                          return null;
+                        },
                         onSaved: (value) {
                           _gender = value!;
                         },
                       ),
-
                       TextFormField(
                         initialValue: _phno,
-                        decoration: InputDecoration(labelText: 'Phone Number'),
+                        decoration:
+                            const InputDecoration(labelText: 'Phone Number'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a phone number';
@@ -162,12 +171,12 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                       TextFormField(
                         initialValue: _bloodPressure,
                         decoration:
-                            InputDecoration(labelText: 'Blood Pressure'),
+                            const InputDecoration(labelText: 'Blood Pressure'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter blood pressure';
                           }
-                          double? bp = double.tryParse(value!);
+                          double? bp = double.tryParse(value);
                           if (bp == null || bp < 60 || bp > 200) {
                             return 'Please enter a valid blood pressure between 60 and 200 mmHg';
                           }
@@ -179,12 +188,13 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                       ),
                       TextFormField(
                         initialValue: _heartRate,
-                        decoration: InputDecoration(labelText: 'Heart Rate'),
+                        decoration:
+                            const InputDecoration(labelText: 'Heart Rate'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter heart rate';
                           }
-                          int? hr = int.tryParse(value!);
+                          int? hr = int.tryParse(value);
                           if (hr == null || hr < 30 || hr > 200) {
                             return 'Please enter a valid heart rate between 30 and 200 beats per minute';
                           }
@@ -196,13 +206,13 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                       ),
                       TextFormField(
                         initialValue: _respiratoryRate,
-                        decoration:
-                            InputDecoration(labelText: 'Respiratory Rate'),
+                        decoration: const InputDecoration(
+                            labelText: 'Respiratory Rate'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter respiratory rate';
                           }
-                          int? rr = int.tryParse(value!);
+                          int? rr = int.tryParse(value);
                           if (rr == null || rr < 10 || rr > 25) {
                             return 'Please enter a valid respiratory rate between 10 and 25 breaths per minute';
                           }
@@ -214,13 +224,13 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                       ),
                       TextFormField(
                         initialValue: _oxygenSaturation,
-                        decoration:
-                            InputDecoration(labelText: 'Oxygen Saturation'),
+                        decoration: const InputDecoration(
+                            labelText: 'Oxygen Saturation'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter oxygen saturation';
                           }
-                          int? o2 = int.tryParse(value!);
+                          int? o2 = int.tryParse(value);
                           if (o2 == null || o2 < 90 || o2 > 100) {
                             return 'Please enter a valid oxygen saturation between 90% and 100%';
                           }
@@ -232,8 +242,8 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                       ),
                       TextFormField(
                         initialValue: _bodyTemperature,
-                        decoration:
-                            InputDecoration(labelText: 'Body Temperature'),
+                        decoration: const InputDecoration(
+                            labelText: 'Body Temperature'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter body temperature';
@@ -252,7 +262,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                             savePatientDetails();
                           }
                         },
-                        child: Text('Save'),
+                        child: const Text('Save'),
                       ),
                     ],
                   ),
@@ -306,7 +316,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Patient updated successfully')),
+          const SnackBar(content: Text('Patient updated successfully')),
         );
 
         // Update the local list of patients with the updated patient details
