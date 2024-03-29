@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'patients.dart'; // Import the Patients model
 import 'Patientlistscreen.dart';
 
 void main() {
- runApp(MyApp());
+ runApp(
+    ChangeNotifierProvider(
+      create: (context) => Patients(),
+      child: MyApp(),
+    ),
+ );
 }
 
 class MyApp extends StatelessWidget {
  @override
  Widget build(BuildContext context) {
     return MaterialApp(
-      home: MyLoginScreen(), // Correctly use MyLoginScreen as the home widget
+      home: MyLoginScreen(),
     );
  }
 }

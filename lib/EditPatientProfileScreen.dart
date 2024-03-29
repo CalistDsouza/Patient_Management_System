@@ -1,53 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'PatientStateManager.dart';
+import 'package:provider/provider.dart'; // Ensure Provider is imported
 import 'Test.dart';
 import 'patient.dart';
+import 'patients.dart'; // Ensure this import is correct
 
 class EditPatientProfileScreen extends StatefulWidget {
-  final String patientId;
+ final String patientId;
 
-  EditPatientProfileScreen({Key? key, required this.patientId})
+ EditPatientProfileScreen({Key? key, required this.patientId})
       : super(key: key);
 
-  @override
-  _EditPatientProfileScreenState createState() =>
+ @override
+ _EditPatientProfileScreenState createState() =>
       _EditPatientProfileScreenState();
 }
 
 class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
-  final _formKey = GlobalKey<FormState>();
-  late String _name;
-  late String _age;
-  late String _address;
-  late String _gender;
-  late String _phno;
-  late String _bloodPressure;
-  late String _heartRate;
-  late String _respiratoryRate;
-  late String _oxygenSaturation;
-  late String _bodyTemperature;
-  late Patient
-      _fetchedPatient; // State variable to store the fetched Patient object
+ final _formKey = GlobalKey<FormState>();
+ late String _name;
+ late String _age;
+ late String _address;
+ late String _gender;
+ late String _phno;
+ late String _bloodPressure;
+ late String _heartRate;
+ late String _respiratoryRate;
+ late String _oxygenSaturation;
+ late String _bodyTemperature;
+ late Patient _fetchedPatient;
 
-  Future<Patient> fetchPatientDetails() async {
-    
-    final response = await http
-        .get(Uri.parse('http://127.0.0.1:5000/Patients/${widget.patientId}'));
+ Future<Patient> fetchPatientDetails() async {
+    final response = await http.get(Uri.parse('http://127.0.0.1:5000/Patients/${widget.patientId}'));
 
     if (response.statusCode == 200) {
-      // Assuming the response body is a JSON string that can be parsed into a Patient object
       _fetchedPatient = Patient.fromJson(jsonDecode(response.body));
       return _fetchedPatient;
     } else {
-      // Handle the error
       throw Exception('Failed to load patient details');
     }
-  }
+ }
 
-  @override
-  Widget build(BuildContext context) {
+ @override
+ Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Patient Profile'),
@@ -66,28 +62,18 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
             _address = _fetchedPatient.address;
             _gender = _fetchedPatient.gender;
             _phno = _fetchedPatient.phno;
-            _bloodPressure = _fetchedPatient.tests.isNotEmpty
-                ? _fetchedPatient.tests[0].bloodPressure
-                : '';
-            _heartRate = _fetchedPatient.tests.isNotEmpty
-                ? _fetchedPatient.tests[0].heartRate
-                : '';
-            _respiratoryRate = _fetchedPatient.tests.isNotEmpty
-                ? _fetchedPatient.tests[0].respiratoryRate
-                : '';
-            _oxygenSaturation = _fetchedPatient.tests.isNotEmpty
-                ? _fetchedPatient.tests[0].oxygenSaturation
-                : '';
-            _bodyTemperature = _fetchedPatient.tests.isNotEmpty
-                ? _fetchedPatient.tests[0].bodyTemperature
-                : '';
+            _bloodPressure = _fetchedPatient.tests.isNotEmpty ? _fetchedPatient.tests[0].bloodPressure : '';
+            _heartRate = _fetchedPatient.tests.isNotEmpty ? _fetchedPatient.tests[0].heartRate : '';
+            _respiratoryRate = _fetchedPatient.tests.isNotEmpty ? _fetchedPatient.tests[0].respiratoryRate : '';
+            _oxygenSaturation = _fetchedPatient.tests.isNotEmpty ? _fetchedPatient.tests[0].oxygenSaturation : '';
+            _bodyTemperature = _fetchedPatient.tests.isNotEmpty ? _fetchedPatient.tests[0].bodyTemperature : '';
 
             return Form(
               key: _formKey,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  children: <Widget>[
+                 children: <Widget>[
                     TextFormField(
                       initialValue: _name,
                       decoration: InputDecoration(labelText: 'Name'),
@@ -125,40 +111,35 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                     ),
                     TextFormField(
                       initialValue: _bloodPressure,
-                      decoration: InputDecoration(
-                          labelText: 'Blood Pressure (X/Y mmHg)'),
+                      decoration: InputDecoration(labelText: 'Blood Pressure'),
                       onSaved: (value) {
                         _bloodPressure = value!;
                       },
                     ),
                     TextFormField(
                       initialValue: _heartRate,
-                      decoration:
-                          InputDecoration(labelText: 'Heart Rate (X/min)'),
+                      decoration: InputDecoration(labelText: 'Heart Rate'),
                       onSaved: (value) {
                         _heartRate = value!;
                       },
                     ),
                     TextFormField(
                       initialValue: _respiratoryRate,
-                      decoration: InputDecoration(
-                          labelText: 'Respiratory Rate (X/min)'),
+                      decoration: InputDecoration(labelText: 'Respiratory Rate'),
                       onSaved: (value) {
                         _respiratoryRate = value!;
                       },
                     ),
                     TextFormField(
                       initialValue: _oxygenSaturation,
-                      decoration:
-                          InputDecoration(labelText: 'Oxygen Saturation (X%)'),
+                      decoration: InputDecoration(labelText: 'Oxygen Saturation'),
                       onSaved: (value) {
                         _oxygenSaturation = value!;
                       },
                     ),
                     TextFormField(
                       initialValue: _bodyTemperature,
-                      decoration:
-                          InputDecoration(labelText: 'Body Temperature (X°C)'),
+                      decoration: InputDecoration(labelText: 'Body Temperature'),
                       onSaved: (value) {
                         _bodyTemperature = value!;
                       },
@@ -172,7 +153,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                       },
                       child: Text('Save'),
                     ),
-                  ],
+                 ],
                 ),
               ),
             );
@@ -180,9 +161,9 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
         },
       ),
     );
-  }
+ }
 
-  Future<void> savePatientDetails() async {
+ Future<void> savePatientDetails() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
@@ -203,58 +184,46 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
         address: _address,
         gender: _gender,
         phno: _phno,
-        tests: [
-          _fetchedPatient.tests.isNotEmpty
-              ? _fetchedPatient.tests[0]
-              : updatedTest
-        ], // Include the updated test in the tests list
+        tests: [updatedTest], // Use the updated test
       );
 
       // Send the updated Patient object to the server
       await updatePatientOnServer(updatedPatient);
     }
-  }
+ }
 
-  Future<void> updatePatientOnServer(Patient updatedPatient) async {
- try {
-    // Replace 'http://127.0.0.1:5000/Patients/${updatedPatient.id}' with your actual server URL
-    final response = await http.put(
-      Uri.parse('http://127.0.0.1:5000/Patients/${updatedPatient.id}'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(updatedPatient.toJson()),
-    );
-
-    if (response.statusCode == 200) {
-      // If the server returns a 200 OK response, then the patient was updated successfully.
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Patient updated successfully')),
+ Future<void> updatePatientOnServer(Patient updatedPatient) async {
+    try {
+      final response = await http.put(
+        Uri.parse('http://127.0.0.1:5000/Patients/${updatedPatient.id}'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(updatedPatient.toJson()),
       );
 
-      // Update the patientListNotifier with the updated patient
-      List<Patient> updatedList = List.from(PatientStateManager.patientListNotifier.value);
-      int index = updatedList.indexWhere((patient) => patient.id == updatedPatient.id);
-      if (index != -1) {
-        updatedList[index] = updatedPatient; // Replace the old patient with the updated patient
-        PatientStateManager.patientListNotifier.value = updatedList;
-      }
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Patient updated successfully')),
+        );
 
-      // Optionally, navigate back to the previous screen or refresh the current screen
-    } else {
-      // If the server returns an error response, then something went wrong.
+        // Update the local list of patients with the updated patient details
+        Provider.of<Patients>(context, listen: false).updatePatient(updatedPatient);
+
+        // Optionally, navigate back to the previous screen or refresh the current screen
+        Navigator.pop(context); // This will navigate back to the previous screen
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+                 'Failed to update patient. Server responded with status code: ${response.statusCode}')),
+        );
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text(
-                'Failed to update patient. Server responded with status code: ${response.statusCode}')),
+        SnackBar(content: Text('Failed to update patient. Error: $e')),
       );
     }
- } catch (e) {
-    // Catch any exceptions and display an error message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Failed to update patient. Error: $e')),
-    );
- }
 }
-
 }
