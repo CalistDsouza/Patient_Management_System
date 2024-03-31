@@ -37,14 +37,14 @@ class _MyLoginScreenState extends State<MyLoginScreen> {
   // Your login screen logic here
 
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  String? _validateEmail(String? value) {
+  String? _validateUsername(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your email';
+      return 'Please enter your username';
     }
-    // Add additional email validation logic here
+    // Add additional username validation logic here
     return null;
   }
 
@@ -81,14 +81,14 @@ class _MyLoginScreenState extends State<MyLoginScreen> {
                     height:
                         16), // Add some space between the title and the input fields
 
-                // Email Input Field
+                // Username Input Field
                 TextFormField(
-                  controller: _emailController,
+                  controller: _usernameController,
                   decoration: const InputDecoration(
                     labelText: 'Username',
                     border: OutlineInputBorder(),
                   ),
-                  validator: _validateEmail,
+                  validator: _validateUsername,
                 ),
                 const SizedBox(height: 8),
 
@@ -109,7 +109,7 @@ class _MyLoginScreenState extends State<MyLoginScreen> {
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
                       // Check default credentials
-                      if (_emailController.text == "admin" &&
+                      if (_usernameController.text == "admin" &&
                           _passwordController.text == "password") {
                         // Navigate to PatientListScreen
                         Navigator.push(

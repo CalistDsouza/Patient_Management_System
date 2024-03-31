@@ -1,72 +1,115 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'patients.dart'; // Import the Patients model
 import 'AddPatientScreen.dart';
 import 'PatientProfileScreen.dart';
 import 'patient.dart';
+import 'patientSearchDelegate.dart'; // Ensure this import matches the file name
 
 class PatientListScreen extends StatefulWidget {
-  @override
-  _PatientListScreenState createState() => _PatientListScreenState();
+ @override
+ _PatientListScreenState createState() => _PatientListScreenState();
 }
-
 class _PatientListScreenState extends State<PatientListScreen> {
-  @override
-  void initState() {
+ final TextEditingController _searchController = TextEditingController();
+
+ @override
+ void initState() {
     super.initState();
     Provider.of<Patients>(context, listen: false).fetchPatients();
-  }
+ }
 
-  @override
-  Widget build(BuildContext context) {
+ @override
+ void dispose() {
+    _searchController.dispose();
+    super.dispose();
+ }
+
+ @override
+ Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Patients'),
+        title: TextField(
+          controller: _searchController,
+          decoration: InputDecoration(
+            hintText: 'Search by name...',
+            prefixIcon: Icon(Icons.search),
+            suffixIcon: IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                _searchController.clear();
+              },
+            ),
+          ),
+          onChanged: (value) {
+            setState(() {});
+          },
+        ),
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(Icons.search),
+        //     onPressed: () async {
+        //       // Use a type assertion to treat the result as Patient?
+        //       final Patient? result = await showSearch(
+        //         context: context,
+        //         delegate: PatientSearchDelegate(patients: Provider.of<Patients>(context, listen: false).patients),
+        //       ) as Patient?;
+        //       if (result != null) {
+        //         Navigator.push(
+        //          context,
+        //          MaterialPageRoute(
+        //             builder: (context) => PatientProfileScreen(patientId: result.id),
+        //          ),
+        //         );
+        //       }
+        //     },
+        //   ),
+        // ],
       ),
-      body: Consumer<Patients>(
-        builder: (context, patients, child) {
-          if (patients.patients.isEmpty) {
-            return Center(
-                child: CircularProgressIndicator()); // Loading indicator
-          }
-
-          // Separate patients into critical and non-critical lists
-          List<Patient> criticalPatients = [];
-          List<Patient> nonCriticalPatients = [];
-          patients.patients.forEach((patient) {
-            if (patient.isCritical()) {
-              criticalPatients.add(patient);
-            } else {
-              nonCriticalPatients.add(patient);
-            }
-          });
-
-          // Combine the lists with headings
-          List<Widget> patientWidgets = [];
-          if (criticalPatients.isNotEmpty) {
-            patientWidgets.add(Text('Critical Patients',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)));
-            patientWidgets.addAll(criticalPatients
-                .map((patient) => _buildPatientTile(context, patient))
-                .toList());
-          }
-          if (nonCriticalPatients.isNotEmpty) {
-            patientWidgets.add(Text('Non-Critical Patients',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)));
-            patientWidgets.addAll(nonCriticalPatients
-                .map((patient) => _buildPatientTile(context, patient))
-                .toList());
-          }
-
-          return ListView.builder(
-            itemCount: patientWidgets.length,
-            itemBuilder: (context, index) {
-              return patientWidgets[index];
-            },
-          );
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await Provider.of<Patients>(context, listen: false).fetchPatients();
+          setState(() {});
         },
+        child: Consumer<Patients>(
+          builder: (context, patients, child) {
+            if (patients.patients.isEmpty) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            final String searchQuery = _searchController.text.toLowerCase();
+            final List<Patient> filteredPatients = patients.patients
+                .where((patient) => patient.name.toLowerCase().contains(searchQuery))
+                .toList();
+
+            List<Patient> criticalPatients = [];
+            List<Patient> nonCriticalPatients = [];
+            filteredPatients.forEach((patient) {
+              if (patient.isCritical()) {
+                criticalPatients.add(patient);
+              } else {
+                nonCriticalPatients.add(patient);
+              }
+            });
+
+            List<Widget> patientWidgets = [];
+            if (criticalPatients.isNotEmpty) {
+              patientWidgets.add(Text('Critical Patients', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)));
+              patientWidgets.addAll(criticalPatients.map((patient) => _buildPatientTile(context, patient)).toList());
+            }
+            if (nonCriticalPatients.isNotEmpty) {
+              patientWidgets.add(Text('Non-Critical Patients', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)));
+              patientWidgets.addAll(nonCriticalPatients.map((patient) => _buildPatientTile(context, patient)).toList());
+            }
+
+            return ListView.builder(
+              itemCount: patientWidgets.length,
+              itemBuilder: (context, index) {
+                return patientWidgets[index];
+              },
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -79,10 +122,9 @@ class _PatientListScreenState extends State<PatientListScreen> {
         backgroundColor: Colors.blue,
       ),
     );
-  }
+ }
 
-  // Helper function to build a ListTile for a patient
-  Widget _buildPatientTile(BuildContext context, Patient patient) {
+ Widget _buildPatientTile(BuildContext context, Patient patient) {
     return ListTile(
       title: Text(patient.name),
       subtitle: Text('Age: ${patient.age}, Gender: ${patient.gender}'),
@@ -95,5 +137,6 @@ class _PatientListScreenState extends State<PatientListScreen> {
         );
       },
     );
-  }
+ }
 }
+
