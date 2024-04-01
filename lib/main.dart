@@ -6,58 +6,54 @@ import 'patients.dart'; // Import the Patients model
 import 'Patientlistscreen.dart';
 
 void main() {
-  runApp(
+ runApp(
     ChangeNotifierProvider(
       create: (context) => Patients(),
       child: const MyApp(),
     ),
-  );
+ );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+ const MyApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
+ @override
+ Widget build(BuildContext context) {
     return const MaterialApp(
       home: MyLoginScreen(),
     );
-  }
+ }
 }
 
 class MyLoginScreen extends StatefulWidget {
-  const MyLoginScreen({super.key});
+ const MyLoginScreen({super.key});
 
-  // Define MyLoginScreen as a StatefulWidget
-  @override
-  _MyLoginScreenState createState() => _MyLoginScreenState();
+ @override
+ _MyLoginScreenState createState() => _MyLoginScreenState();
 }
 
 class _MyLoginScreenState extends State<MyLoginScreen> {
-  // Your login screen logic here
+ final _formKey = GlobalKey<FormState>();
+ final TextEditingController _usernameController = TextEditingController();
+ final TextEditingController _passwordController = TextEditingController();
+ String? _errorMessage; // State variable for the error message
 
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-  String? _validateUsername(String? value) {
+ String? _validateUsername(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your username';
     }
-    // Add additional username validation logic here
     return null;
-  }
+ }
 
-  String? _validatePassword(String? value) {
+ String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your password';
     }
-    // Add additional password validation logic here
     return null;
-  }
+ }
 
-  @override
-  Widget build(BuildContext context) {
+ @override
+ Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Login Screen')),
       body: Center(
@@ -68,65 +64,65 @@ class _MyLoginScreenState extends State<MyLoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Sign in to your account title
                 const Text(
-                  'Sign in to your account',
-                  textAlign: TextAlign.center, // Center the text
-                  style: TextStyle(
-                    fontSize: 24, // Adjust the font size as needed
-                    fontWeight: FontWeight.bold, // Make the text bold
-                  ),
+                 'Sign in to your account',
+                 textAlign: TextAlign.center,
+                 style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                 ),
                 ),
-                const SizedBox(
-                    height:
-                        16), // Add some space between the title and the input fields
+                const SizedBox(height: 16),
 
-                // Username Input Field
                 TextFormField(
-                  controller: _usernameController,
-                  decoration: const InputDecoration(
+                 controller: _usernameController,
+                 decoration: const InputDecoration(
                     labelText: 'Username',
                     border: OutlineInputBorder(),
-                  ),
-                  validator: _validateUsername,
+                 ),
+                 validator: _validateUsername,
                 ),
                 const SizedBox(height: 8),
 
-                // Password Input Field
                 TextFormField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
+                 controller: _passwordController,
+                 obscureText: true,
+                 decoration: const InputDecoration(
                     labelText: 'Password',
                     border: OutlineInputBorder(),
-                  ),
-                  validator: _validatePassword,
+                 ),
+                 validator: _validatePassword,
                 ),
                 const SizedBox(height: 8),
 
-                // Log In Button
+                if (_errorMessage != null)
+                 Text(
+                    _errorMessage!,
+                    style: TextStyle(color: Colors.red),
+                 ),
+
                 ElevatedButton(
-                  onPressed: () {
+                 onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
-                      // Check default credentials
                       if (_usernameController.text == "admin" &&
                           _passwordController.text == "password") {
-                        // Navigate to PatientListScreen
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => PatientListScreen()),
                         );
                       } else {
-                        // Show error message or implement additional login logic
+                        setState(() {
+                          _errorMessage = 'Invalid username or password';
+                        });
                       }
                     }
-                  },
-                  style: ElevatedButton.styleFrom(
+                 },
+                 style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: Colors.blue, // Set text color to white
-                  ),
-                  child: const Text('Log In'),
+                    backgroundColor: Colors.blue,
+                 ),
+                 child: const Text('Log In'),
                 ),
               ],
             ),
@@ -134,5 +130,5 @@ class _MyLoginScreenState extends State<MyLoginScreen> {
         ),
       ),
     );
-  }
+ }
 }

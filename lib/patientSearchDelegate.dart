@@ -24,7 +24,6 @@ class PatientSearchDelegate extends SearchDelegate<Patient?> {
     return IconButton(
       icon: Icon(Icons.arrow_back),
       onPressed: () {
-        // Simply close the search delegate without passing null
         close(context, null);
       },
     );

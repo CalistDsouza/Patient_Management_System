@@ -45,26 +45,7 @@ class _PatientListScreenState extends State<PatientListScreen> {
             setState(() {});
           },
         ),
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: Icon(Icons.search),
-        //     onPressed: () async {
-        //       // Use a type assertion to treat the result as Patient?
-        //       final Patient? result = await showSearch(
-        //         context: context,
-        //         delegate: PatientSearchDelegate(patients: Provider.of<Patients>(context, listen: false).patients),
-        //       ) as Patient?;
-        //       if (result != null) {
-        //         Navigator.push(
-        //          context,
-        //          MaterialPageRoute(
-        //             builder: (context) => PatientProfileScreen(patientId: result.id),
-        //          ),
-        //         );
-        //       }
-        //     },
-        //   ),
-        // ],
+        
       ),
       body: RefreshIndicator(
         onRefresh: () async {
