@@ -104,7 +104,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       return 'Phone number should only contain numbers';
                     }
                     if (value.length > 10) {
-                      return 'Phone number should not be more than 10 digits';
+                      return 'Phone number should not\nbe more than 10 digits';
                     }
                     return null;
                   },
@@ -125,7 +125,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           }
                           double? bp = double.tryParse(value);
                           if (bp == null || bp < 60 || bp > 200) {
-                            return 'Please enter a valid blood pressure between 60 and 200 mmHg';
+                            return 'Please enter a valid\nblood pressure between\n60 and 200 mmHg';
                           }
                           return null;
                         },
@@ -143,7 +143,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           }
                           int? rr = int.tryParse(value);
                           if (rr == null || rr < 10 || rr > 25) {
-                            return 'Please enter a valid respiratory rate between 10 and 25 breaths per minute';
+                            return 'Please enter a valid\nrespiratory rate between \n10 and 25 breaths per minute';
                           }
                           return null;
                         },
@@ -165,7 +165,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           }
                           int? o2 = int.tryParse(value);
                           if (o2 == null || o2 < 90 || o2 > 100) {
-                            return 'Please enter a valid oxygen saturation between 90% and 100%';
+                            return 'Please enter a valid\n oxygen saturation between\n90% and 100%';
                           }
                           return null;
                         },
@@ -183,7 +183,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           }
                           int? hr = int.tryParse(value);
                           if (hr == null || hr < 30 || hr > 200) {
-                            return 'Please enter a valid heart rate between 30 and 200 beats per minute';
+                            return 'Please enter a valid\nheart rate between 30 and 200\nbeats per minute';
                           }
                           return null;
                         },

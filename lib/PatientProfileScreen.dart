@@ -162,7 +162,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
 
     // First, attempt to delete the patient from the backend
     final response = await http.delete(
-        Uri.parse('http://10.0.2.2:5000/Patients/${widget.patientId}'));
+        Uri.parse('http://127.0.0.1:5000/Patients/${widget.patientId}'));
 
     if (response.statusCode == 200) {
       // If the backend deletion is successful, remove the patient from the local model
