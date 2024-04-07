@@ -6,6 +6,7 @@ import 'patients.dart'; // Import the Patients model
 import 'package:http/http.dart' as http;
 import 'EditPatientProfileScreen.dart';
 import 'patient.dart';
+import 'AddTestScreen';
 
 class PatientProfileScreen extends StatefulWidget {
   final String? patientId;
@@ -31,6 +32,19 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
           },
         ),
         actions: <Widget>[
+          // Inside the AppBar actions list in PatientProfileScreen
+IconButton(
+ icon: const Icon(Icons.add),
+ onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddTestScreen(patientId: widget.patientId),
+      ),
+    );
+ },
+),
+
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: editPatient,
@@ -85,6 +99,11 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+          //                   Text(
+          //   'Date: ${test.date}', // Display the date of the test
+          //   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          // ),
+          // const SizedBox(height: 8), // Add space between text elements
                             Text(
                               'Blood Pressure: ${test.bloodPressure}',
                               style: const TextStyle(

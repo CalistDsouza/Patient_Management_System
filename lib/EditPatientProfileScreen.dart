@@ -32,6 +32,8 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
   late String _oxygenSaturation;
   late String _bodyTemperature;
   late Patient _fetchedPatient;
+  
+  late DateTime _selectedDate;
 
   Future<Patient> fetchPatientDetails() async {
     final response = await http
@@ -281,6 +283,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
 
       // Create a new Test object with the updated values
       Test updatedTest = Test(
+        // date: _selectedDate,
         bloodPressure: _bloodPressure,
         heartRate: _heartRate,
         respiratoryRate: _respiratoryRate,
