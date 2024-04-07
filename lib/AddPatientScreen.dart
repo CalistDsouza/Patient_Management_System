@@ -263,9 +263,10 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                           address: address,
                           gender: selectedGender!,
                           phno: phno,
+
                           tests: [
                             Test(
-                              // date: DateTime.now(),
+                             // date: DateTime.now().toIso8601String(),
                               bloodPressure: bloodPressure,
                               heartRate: heartRate,
                               respiratoryRate: respiratoryRate,
