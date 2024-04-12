@@ -247,7 +247,8 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       if (_formKey.currentState!.validate()) {
                         // Collect data from the controllers
                         String name = nameController.text;
-                        String age = ageController.text;
+                        int age =
+                            int.parse(ageController.text); // Convert age to int
                         String address = addressController.text;
                         String phno = phnoController.text;
                         String bloodPressure = bpController.text;
@@ -256,26 +257,28 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                         String heartRate = hrController.text;
                         String bodyTemperature = bolController.text;
 
-                        // Create a Patient object with the collected data
+                        // Create a Test object with the collected data and the current date
+                        Test newTest = Test(
+                          date: DateTime.now(), // Include the current date
+                          bloodPressure: bloodPressure,
+                          heartRate: heartRate,
+                          respiratoryRate: respiratoryRate,
+                          oxygenSaturation: oxygenSaturation,
+                          bodyTemperature: bodyTemperature,
+                        );
+
+                        // Create a Patient object with the collected data and the new Test object
                         Patient newPatient = Patient(
                           name: name,
-                          age: age,
+                          age: age
+                              .toString(), // Convert age back to String if needed
                           address: address,
                           gender: selectedGender!,
                           phno: phno,
-
                           tests: [
-                            Test(
-                             // date: DateTime.now().toIso8601String(),
-                              bloodPressure: bloodPressure,
-                              heartRate: heartRate,
-                              respiratoryRate: respiratoryRate,
-                              oxygenSaturation: oxygenSaturation,
-                              bodyTemperature: bodyTemperature,
-                            ),
-                          ],
+                            newTest
+                          ], // Add the new Test object to the tests list
                         );
-
                         // Use the Patients model to add the new patient
                         bool success =
                             await Provider.of<Patients>(context, listen: false)

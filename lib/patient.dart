@@ -1,15 +1,15 @@
 import 'Test.dart';
 
 class Patient {
-  final String? id;
-  final String name;
-  final String age;
-  final String address;
-  final String gender;
-  final String phno;
-  final List<Test> tests;
+ final String? id;
+ final String name;
+ final String age;
+ final String address;
+ final String gender;
+ final String phno;
+ final List<Test> tests;
 
-  Patient({
+ Patient({
     this.id,
     required this.name,
     required this.age,
@@ -17,24 +17,27 @@ class Patient {
     required this.gender,
     required this.phno,
     required this.tests,
-  });
+ });
 
-  factory Patient.fromJson(Map<String, dynamic> json) {
+ factory Patient.fromJson(Map<String, dynamic> json) {
     var testsFromJson = json['tests'] as List? ?? [];
     List<Test> testsList = testsFromJson.map((i) => Test.fromJson(i)).toList();
 
     return Patient(
-      id: json['_id'] as String?,
-      name: json['name'] as String? ?? 'N/A',
-      age: json['age'] as String? ?? 'N/A',
-      address: json['address'] as String? ?? 'N/A',
-      gender: json['gender'] as String? ?? 'N/A',
-      phno: json['phno'] as String? ?? 'N/A',
-      tests: testsList,
-    );
-  }
+      id: json['_id'] as String? ?? 'N/A', // Provide a default value for id
+      name: json['name'] as String? ?? 'N/A', // Provide a default value for name
+      age: json['age'] as String? ?? 'N/A', // Provide a default value for age
+      address: json['address'] as String? ?? 'N/A', // Provide a default value for address
+      gender: json['gender'] as String? ?? 'N/A', // Provide a default value for gender
+      phno: json['phno'] as String? ?? 'N/A', // Provide a default value for phno
+      tests: (json['tests'] as List? ?? [])
+        .map((i) => Test.fromJson(i))
+        .toList(), // Handle potential null 'tests' field
 
-  Map<String, dynamic> toJson() {
+    );
+ }
+
+ Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
@@ -44,10 +47,10 @@ class Patient {
       'phno': phno,
       'tests': tests.map((test) => test.toJson()).toList(),
     };
-  }
+ }
 
-  // Method to check if the patient is critical
-  bool isCritical() {
+ // Method to check if the patient is critical
+ bool isCritical() {
     final latestTest =
         tests.last; // Assuming tests are sorted in the order they were added
 
@@ -68,5 +71,5 @@ class Patient {
         oxygenSaturation > 100 ||
         bodyTemperature < 97 ||
         bodyTemperature > 99;
-  }
+ }
 }

@@ -61,12 +61,12 @@ class _AddTestScreenState extends State<AddTestScreen> {
                     });
                  }
                 },
-                validator: (value) {
-                 if (_selectedDate == null) {
-                    return 'Please select a date';
-                 }
-                 return null;
-                },
+                // validator: (value) {
+                //  if (_selectedDate == null) {
+                //     return 'Please select a date';
+                //  }
+                //  return null;
+                // },
               ),
               // Blood Pressure
               TextFormField(

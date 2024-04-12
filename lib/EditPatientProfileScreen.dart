@@ -284,6 +284,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
       // Create a new Test object with the updated values
       Test updatedTest = Test(
        // date: DateTime.now().toString(),
+        date: DateTime.now(),
         bloodPressure: _bloodPressure,
         heartRate: _heartRate,
         respiratoryRate: _respiratoryRate,
