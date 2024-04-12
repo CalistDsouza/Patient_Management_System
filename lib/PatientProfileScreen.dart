@@ -9,7 +9,6 @@ import 'patient.dart';
 import 'AddTestScreen.dart';
 import 'package:intl/intl.dart';
 
-
 class PatientProfileScreen extends StatefulWidget {
   final String? patientId;
 
@@ -104,59 +103,78 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                     'Medical History:',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  for (var test in patient!.tests)
-                    Card(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Date: ${DateFormat('yyyy-MM-dd').format(test.date)}', // Display the date of the test
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                                height: 8), // Add space between text elements
-                            Text(
-                              'Blood Pressure: ${test.bloodPressure} mmHg',
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                                height: 8), // Add space between text elements
-                            Text(
-                              'Heart Rate: ${test.heartRate} bpm',
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                                height: 8), // Add space between text elements
-                            Text(
-                              'Respiratory Rate: ${test.respiratoryRate} breaths/minute',
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                                height: 8), // Add space between text elements
-                            Text(
-                              'Oxygen Saturation: ${test.oxygenSaturation} %',
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                                height: 8), // Add space between text elements
-                            Text(
-                              'Body Temperature: ${test.bodyTemperature} °F',
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            
-                          ],
-                        ),
-                      ),
-                    ),
+                  if (patient!.tests.isNotEmpty)
+                    ...patient!.tests
+                        .map((test) => Card(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Date: ${DateFormat('yyyy-MM-dd').format(test.date)}', // Display the date of the test
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                        height:
+                                            8), // Add space between text elements
+                                    Text(
+                                      'Blood Pressure: ${test.bloodPressure} mmHg',
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                        height:
+                                            8), // Add space between text elements
+                                    Text(
+                                      'Heart Rate: ${test.heartRate} bpm',
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                        height:
+                                            8), // Add space between text elements
+                                    Text(
+                                      'Respiratory Rate: ${test.respiratoryRate} breaths/minute',
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                        height:
+                                            8), // Add space between text elements
+                                    Text(
+                                      'Oxygen Saturation: ${test.oxygenSaturation} %',
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                        height:
+                                            8), // Add space between text elements
+                                    Text(
+                                      'Body Temperature: ${test.bodyTemperature} °F',
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () => deleteTest(test
+                                          .id), // Assuming each test has a unique ID
+                                      child: const Icon(Icons
+                                          .delete,
+                                          color: Colors.red,), // Use an icon instead of text
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ))
+                        .toList(),
                   // if (patient!.isCritical())
                   //   const Padding(
                   //     padding: EdgeInsets.all(8.0),
@@ -215,6 +233,30 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
       // If the backend deletion fails, show an error message
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to delete patient')),
+      );
+    }
+  }
+
+  Future<void> deleteTest(String testId) async {
+    final response = await http.delete(
+      Uri.parse(
+          'http://127.0.0.1:5000/Patients/${widget.patientId}/tests/$testId'),
+    );
+
+    if (response.statusCode == 200) {
+      // If the server returns a 200 OK response, then the test was deleted successfully.
+      // You might want to update the UI to reflect this change.
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Test deleted successfully')),
+      );
+      // Optionally, refresh the patient's tests list here
+      setState(() {
+        // This will trigger a rebuild of the widget, which should update the UI to reflect the deletion.
+      });
+    } else {
+      // If the server returns an error response, then handle the error.
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete test')),
       );
     }
   }

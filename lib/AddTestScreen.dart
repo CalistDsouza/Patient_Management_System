@@ -166,7 +166,7 @@ class _AddTestScreenState extends State<AddTestScreen> {
                         'Content-Type': 'application/json; charset=UTF-8',
                       },
                       body: jsonEncode(<String, dynamic>{
-                        'date': _selectedDate!.toIso8601String(),
+                        'date': _selectedDate?.toIso8601String(),
                         'bloodPressure': _bloodPressure,
                         'heartRate': _heartRate,
                         'respiratoryRate': _respiratoryRate,
@@ -174,8 +174,9 @@ class _AddTestScreenState extends State<AddTestScreen> {
                         'bodyTemperature': _bodyTemperature,
                       }),
                     );
-                    if (response.statusCode == 200) {
-                      // If the server returns a 200 OK response, then navigate back to the PatientProfileScreen
+                    if (response.statusCode == 200 || response.statusCode == 201) {
+                      
+                      // If the server returns a 200 OK or 201 Created response, then navigate back to the PatientProfileScreen
                       Navigator.pop(context);
                     } else {
                       // If the server returns an error response, then show an error message

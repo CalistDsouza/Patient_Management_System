@@ -259,6 +259,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
 
                         // Create a Test object with the collected data and the current date
                         Test newTest = Test(
+                          id: 'placeholder-id',
                           date: DateTime.now(), // Include the current date
                           bloodPressure: bloodPressure,
                           heartRate: heartRate,
