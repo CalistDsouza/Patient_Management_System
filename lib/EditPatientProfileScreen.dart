@@ -173,7 +173,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                       TextFormField(
                         initialValue: _bloodPressure,
                         decoration:
-                            const InputDecoration(labelText: 'Blood Pressure'),
+                            const InputDecoration(labelText: 'Blood Pressure (mmHg)'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter blood pressure';
@@ -191,7 +191,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                       TextFormField(
                         initialValue: _heartRate,
                         decoration:
-                            const InputDecoration(labelText: 'Heart Rate'),
+                            const InputDecoration(labelText: 'Heart Rate (bpm)'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter heart rate';
@@ -209,7 +209,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                       TextFormField(
                         initialValue: _respiratoryRate,
                         decoration: const InputDecoration(
-                            labelText: 'Respiratory Rate'),
+                            labelText: 'Respiratory Rate (breaths per minute)'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter respiratory rate';
@@ -227,7 +227,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                       TextFormField(
                         initialValue: _oxygenSaturation,
                         decoration: const InputDecoration(
-                            labelText: 'Oxygen Saturation'),
+                            labelText: 'Oxygen Saturation (%)'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter oxygen saturation';
@@ -245,7 +245,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
                       TextFormField(
                         initialValue: _bodyTemperature,
                         decoration: const InputDecoration(
-                            labelText: 'Body Temperature'),
+                            labelText: 'Body Temperature (°F)'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter body temperature';

@@ -118,7 +118,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       child: TextFormField(
                         controller: bpController,
                         decoration:
-                            const InputDecoration(hintText: 'Blood Pressure'),
+                            const InputDecoration(hintText: 'Blood Pressure (mmHg)'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter blood pressure';
@@ -136,7 +136,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       child: TextFormField(
                         controller: rrController,
                         decoration:
-                            const InputDecoration(hintText: 'Respiratory Rate'),
+                            const InputDecoration(hintText: 'Respiratory Rate (breaths/minute)'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter respiratory rate';
@@ -158,7 +158,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       child: TextFormField(
                         controller: o2Controller,
                         decoration: const InputDecoration(
-                            hintText: 'Oxygen Saturation'),
+                            hintText: 'Oxygen Saturation (%)'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter oxygen saturation';
@@ -176,7 +176,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       child: TextFormField(
                         controller: hrController,
                         decoration:
-                            const InputDecoration(hintText: 'Heart Rate'),
+                            const InputDecoration(hintText: 'Heart Rate (bpm)'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter heart rate';
@@ -198,7 +198,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
                       child: TextFormField(
                         controller: bolController,
                         decoration:
-                            const InputDecoration(hintText: 'Body Temperature'),
+                            const InputDecoration(hintText: 'Body Temperature (°F)'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter body temperature';

@@ -90,6 +90,16 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                     style: const TextStyle(fontSize: 18),
                   ),
                   const SizedBox(height: 20),
+                  if (patient!.isCritical())
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Patient is in critical condition.',
+                        style: TextStyle(
+                            color: Colors.red, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  const SizedBox(height: 20),
                   const Text(
                     'Medical History:',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -110,35 +120,35 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                             const SizedBox(
                                 height: 8), // Add space between text elements
                             Text(
-                              'Blood Pressure: ${test.bloodPressure}',
+                              'Blood Pressure: ${test.bloodPressure} mmHg',
                               style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(
                                 height: 8), // Add space between text elements
                             Text(
-                              'Heart Rate: ${test.heartRate}',
+                              'Heart Rate: ${test.heartRate} bpm',
                               style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(
                                 height: 8), // Add space between text elements
                             Text(
-                              'Respiratory Rate: ${test.respiratoryRate}',
+                              'Respiratory Rate: ${test.respiratoryRate} breaths/minute',
                               style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(
                                 height: 8), // Add space between text elements
                             Text(
-                              'Oxygen Saturation: ${test.oxygenSaturation}',
+                              'Oxygen Saturation: ${test.oxygenSaturation} %',
                               style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(
                                 height: 8), // Add space between text elements
                             Text(
-                              'Body Temperature: ${test.bodyTemperature}',
+                              'Body Temperature: ${test.bodyTemperature} °F',
                               style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
@@ -147,15 +157,15 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                         ),
                       ),
                     ),
-                  if (patient!.isCritical())
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Patient is in critical condition.',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                  // if (patient!.isCritical())
+                  //   const Padding(
+                  //     padding: EdgeInsets.all(8.0),
+                  //     child: Text(
+                  //       'Patient is in critical condition.',
+                  //       style: TextStyle(
+                  //           color: Colors.red, fontWeight: FontWeight.bold),
+                  //     ),
+                  //   ),
                 ],
               ),
             );

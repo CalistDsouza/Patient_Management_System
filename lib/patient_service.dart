@@ -10,7 +10,7 @@ class PatientService {
     final response = await http.get(Uri.parse('$_baseUrl/Patients'));
 
     if (response.statusCode == 200) {
-      print('JSON Response: ${response.body}'); // Print the JSON response
+      // print('JSON Response: ${response.body}'); // Print the JSON response
       List<dynamic> jsonResponse = jsonDecode(response.body);
       return jsonResponse.map((json) => Patient.fromJson(json)).toList();
     } else {

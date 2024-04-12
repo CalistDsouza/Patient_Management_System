@@ -71,7 +71,7 @@ class _AddTestScreenState extends State<AddTestScreen> {
               // Blood Pressure
               TextFormField(
                 initialValue: _bloodPressure,
-                decoration: const InputDecoration(labelText: 'Blood Pressure'),
+                decoration: const InputDecoration(labelText: 'Blood Pressure (mmHg)'),
                 validator: (value) {
                  if (value == null || value.isEmpty) {
                     return 'Please enter blood pressure';
@@ -89,7 +89,7 @@ class _AddTestScreenState extends State<AddTestScreen> {
               // Heart Rate
               TextFormField(
                 initialValue: _heartRate,
-                decoration: const InputDecoration(labelText: 'Heart Rate'),
+                decoration: const InputDecoration(labelText: 'Heart Rate (bpm)'),
                 validator: (value) {
                  if (value == null || value.isEmpty) {
                     return 'Please enter heart rate';
@@ -107,7 +107,7 @@ class _AddTestScreenState extends State<AddTestScreen> {
               // Respiratory Rate
               TextFormField(
                 initialValue: _respiratoryRate,
-                decoration: const InputDecoration(labelText: 'Respiratory Rate'),
+                decoration: const InputDecoration(labelText: 'Respiratory Rate (breaths/minute)'),
                 validator: (value) {
                  if (value == null || value.isEmpty) {
                     return 'Please enter respiratory rate';
@@ -125,7 +125,7 @@ class _AddTestScreenState extends State<AddTestScreen> {
               // Oxygen Saturation
               TextFormField(
                 initialValue: _oxygenSaturation,
-                decoration: const InputDecoration(labelText: 'Oxygen Saturation'),
+                decoration: const InputDecoration(labelText: 'Oxygen Saturation (%)'),
                 validator: (value) {
                  if (value == null || value.isEmpty) {
                     return 'Please enter oxygen saturation';
@@ -143,7 +143,7 @@ class _AddTestScreenState extends State<AddTestScreen> {
               // Body Temperature
               TextFormField(
                 initialValue: _bodyTemperature,
-                decoration: const InputDecoration(labelText: 'Body Temperature'),
+                decoration: const InputDecoration(labelText: 'Body Temperature (°F)'),
                 validator: (value) {
                  if (value == null || value.isEmpty) {
                     return 'Please enter body temperature';
