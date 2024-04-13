@@ -34,7 +34,7 @@ class _AddPatientScreenState extends State<AddPatientScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Patient Data'),
+        title: const Text('New Patient'),
         centerTitle: true,
       ),
       body: Padding(
