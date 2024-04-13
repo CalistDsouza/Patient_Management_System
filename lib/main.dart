@@ -104,7 +104,7 @@ class _MyLoginScreenState extends State<MyLoginScreen> {
                 ElevatedButton(
                  onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
-                      if (_usernameController.text == "admin" &&
+                      if (_usernameController.text == "nurse" &&
                           _passwordController.text == "password") {
                         Navigator.push(
                           context,
