@@ -32,7 +32,7 @@ class _PatientListScreenState extends State<PatientListScreen> {
         title: TextField(
           controller: _searchController,
           decoration: InputDecoration(
-            hintText: 'Search by name...',
+            hintText: 'Search by name or condition',
             prefixIcon: Icon(Icons.search),
             suffixIcon: IconButton(
               icon: Icon(Icons.clear),
@@ -60,7 +60,9 @@ class _PatientListScreenState extends State<PatientListScreen> {
 
             final String searchQuery = _searchController.text.toLowerCase();
             final List<Patient> filteredPatients = patients.patients
-                .where((patient) => patient.name.toLowerCase().contains(searchQuery))
+                .where((patient) => patient.name.toLowerCase().contains(searchQuery) ||
+                                    (searchQuery == "critical" && patient.isCritical()) ||
+                                    (searchQuery == "non-critical" && !patient.isCritical()))
                 .toList();
 
             List<Patient> criticalPatients = [];

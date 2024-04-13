@@ -4,7 +4,7 @@ import 'patient.dart'; // Make sure to import your Patient class
 
 class PatientService {
   static const String _baseUrl =
-      'http://127.0.0.1:5000'; // Adjust the base URL as needed
+      'https://web-techs-nodejs.onrender.com'; // Adjust the base URL as needed
 
   Future<List<Patient>> fetchPatients() async {
     final response = await http.get(Uri.parse('$_baseUrl/Patients'));

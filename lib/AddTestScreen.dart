@@ -4,8 +4,9 @@ import 'dart:convert';
 
 class AddTestScreen extends StatefulWidget {
  final String? patientId;
+ final VoidCallback? onTestAdded;
 
- AddTestScreen({Key? key, this.patientId}) : super(key: key);
+ AddTestScreen({Key? key, this.patientId,this.onTestAdded }) : super(key: key);
 
  @override
  _AddTestScreenState createState() => _AddTestScreenState();
@@ -36,7 +37,8 @@ class _AddTestScreenState extends State<AddTestScreen> {
       appBar: AppBar(
         title: Text('Add Test'),
       ),
-      body: Form(
+      body: SingleChildScrollView(
+        child: Form(
         key: _formKey,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -161,7 +163,7 @@ class _AddTestScreenState extends State<AddTestScreen> {
                     _formKey.currentState!.save();
                     // Example API call to add a test
                     final response = await http.post(
-                      Uri.parse('http://127.0.0.1:5000/Patients/${widget.patientId}/tests'),
+                      Uri.parse('https://web-techs-nodejs.onrender.com/Patients/${widget.patientId}/tests'),
                       headers: <String, String>{
                         'Content-Type': 'application/json; charset=UTF-8',
                       },
@@ -175,8 +177,12 @@ class _AddTestScreenState extends State<AddTestScreen> {
                       }),
                     );
                     if (response.statusCode == 200 || response.statusCode == 201) {
-                      
+                      widget.onTestAdded?.call();
                       // If the server returns a 200 OK or 201 Created response, then navigate back to the PatientProfileScreen
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Test added successfully')),
+                      );
+                      
                       Navigator.pop(context);
                     } else {
                       // If the server returns an error response, then show an error message
@@ -192,6 +198,7 @@ class _AddTestScreenState extends State<AddTestScreen> {
           ),
         ),
       ),
+    ),
     );
  }
 

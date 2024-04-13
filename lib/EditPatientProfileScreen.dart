@@ -37,7 +37,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
 
   Future<Patient> fetchPatientDetails() async {
     final response = await http
-        .get(Uri.parse('http://127.0.0.1:5000/Patients/${widget.patientId}'));
+        .get(Uri.parse('https://web-techs-nodejs.onrender.com/Patients/${widget.patientId}'));
 
     if (response.statusCode == 200) {
       _fetchedPatient = Patient.fromJson(jsonDecode(response.body));
@@ -312,7 +312,7 @@ class _EditPatientProfileScreenState extends State<EditPatientProfileScreen> {
   Future<void> updatePatientOnServer(Patient updatedPatient) async {
     try {
       final response = await http.put(
-        Uri.parse('http://127.0.0.1:5000/Patients/${updatedPatient.id}'),
+        Uri.parse('https://web-techs-nodejs.onrender.com/Patients/${updatedPatient.id}'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

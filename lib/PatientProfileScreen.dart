@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/patient_service.dart';
 import 'package:provider/provider.dart';
 import 'patients.dart'; // Import the Patients model
 import 'package:http/http.dart' as http;
@@ -20,6 +21,28 @@ class PatientProfileScreen extends StatefulWidget {
 
 class _PatientProfileScreenState extends State<PatientProfileScreen> {
   late Patient? patient;
+
+  @override
+ void initState() {
+    super.initState();
+    _fetchPatientData();
+ }
+
+ void _fetchPatientData() async {
+ // Fetch patient data here and update the patient variable
+ // This is a placeholder for your actual data fetching logic
+ Patient? fetchedPatient = await PatientService.fetchPatientById(widget.patientId!);
+ setState(() {
+    patient = fetchedPatient;
+ });
+}
+
+ void _onTestAdded() {
+    // This function is called after a test is added
+    // Refresh the patient data to include the newly added test
+    _fetchPatientData();
+ }
+
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +136,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Date: ${DateFormat('yyyy-MM-dd').format(test.date)}', // Display the date of the test
+                                      'Date and Time: ${DateFormat('yyyy-MM-dd, HH:mm').format(test.date)}', // Display the date and time of the test
                                       style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold),
@@ -215,7 +238,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
 
     // First, attempt to delete the patient from the backend
     final response = await http.delete(
-        Uri.parse('http://127.0.0.1:5000/Patients/${widget.patientId}'));
+        Uri.parse('https://web-techs-nodejs.onrender.com/Patients/${widget.patientId}'));
 
     if (response.statusCode == 200) {
       // If the backend deletion is successful, remove the patient from the local model
@@ -240,7 +263,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
   Future<void> deleteTest(String testId) async {
     final response = await http.delete(
       Uri.parse(
-          'http://127.0.0.1:5000/Patients/${widget.patientId}/tests/$testId'),
+          'https://web-techs-nodejs.onrender.com/Patients/${widget.patientId}/tests/$testId'),
     );
 
     if (response.statusCode == 200) {
