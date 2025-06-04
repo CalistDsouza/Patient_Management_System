@@ -41,10 +41,4 @@ A cross-platform patient management mobile application built using **Flutter**. 
 - [📘 Project Report (PDF)](./Patient%20Management%20System%20MAPD-722.pdf)  
 - [📊 Final Presentation (PDF)](./MAPD%20722%20Final%20Presentation.pdf)
 
-## 📸 Screenshots
 
-*(Add screenshots here if available)*
-
-## 📝 License
-
-This project is for educational purposes only.
