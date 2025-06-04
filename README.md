@@ -1,88 +1,50 @@
-Patient Management System
-A cross-platform mobile application developed using Flutter, designed to streamline patient management for healthcare providers. This system facilitates efficient handling of patient records, appointments, and medical histories.
+# Patient Management System
 
-📱 Features
-Patient Registration: Add and manage patient details seamlessly.
+A cross-platform patient management mobile application built using **Flutter**. This app enables healthcare providers to manage patient data, appointments, and medical histories efficiently.
 
-Appointment Scheduling: Organize and track patient appointments.
+## 🚀 Features
 
-Medical Records: Maintain comprehensive medical histories for each patient.
+- Patient registration and management  
+- Appointment scheduling  
+- Medical history tracking  
+- User authentication  
+- Cross-platform support (Android, iOS, Web, Windows, macOS, Linux)
 
-User Authentication: Secure login system for authorized access.
+## 🛠 Tech Stack
 
-Responsive UI: Consistent user experience across Android, iOS, Web, and Desktop platforms.
+- **Framework**: Flutter  
+- **Language**: Dart  
+- **IDE**: Android Studio / VS Code
 
-🛠️ Tech Stack
-Framework: Flutter
+## 📦 Getting Started
 
-Language: Dart
+1. Clone the repository:
+   ```
+   git clone https://github.com/CalistDsouza/Patient_Management_System.git
+   cd Patient_Management_System
+   ```
 
-State Management: [Specify if using Provider, Bloc, etc.]
+2. Install dependencies:
+   ```
+   flutter pub get
+   ```
 
-Database: [Specify if using Firebase, SQLite, etc.]
+3. Run the app:
+   ```
+   flutter run
+   ```
 
-Authentication: [Specify method, e.g., Firebase Auth]
+> 📌 Make sure Flutter is properly installed. [Flutter Install Guide](https://flutter.dev/docs/get-started/install)
 
-Platform Support: Android, iOS, Web, Windows, macOS, Linux
+## 📄 Documentation
 
-📂 Project Structure
-css
-Copy
-Edit
-Patient_Management_System/
-├── android/
-├── assets/
-├── ios/
-├── lib/
-│   ├── main.dart
-│   └── [Other Dart files]
-├── linux/
-├── macos/
-├── test/
-├── web/
-├── windows/
-├── pubspec.yaml
-└── README.md
-🚀 Getting Started
-Prerequisites
-Flutter SDK: Install Flutter
+- [📘 Project Report (PDF)](./Patient%20Management%20System%20MAPD-722.pdf)  
+- [📊 Final Presentation (PDF)](./MAPD%20722%20Final%20Presentation.pdf)
 
-Dart SDK: Included with Flutter
+## 📸 Screenshots
 
-[Any other dependencies]
+*(Add screenshots here if available)*
 
-Installation
-Clone the repository:
+## 📝 License
 
-bash
-Copy
-Edit
-git clone https://github.com/CalistDsouza/Patient_Management_System.git
-cd Patient_Management_System
-Install dependencies:
-
-bash
-Copy
-Edit
-flutter pub get
-Run the application:
-
-bash
-Copy
-Edit
-flutter run
-Ensure a simulator or device is connected.
-
-📄 Documentation
-For detailed information on the application's architecture and features, refer to the following documents:
-
-Patient Management System MAPD-722.pdf
-
-MAPD 722 Final Presentation.pdf
-
-🤝 Contributors
-Calist Dsouza
-Ahmed Abbas
-
-📬 Contact
-For any inquiries or feedback, please reach out to dsouzacalist2001@gmail.com.
+This project is for educational purposes only.
